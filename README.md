@@ -1,1 +1,3 @@
-# movies-explorer-frontend
+# movies-explorer-frontendgit
+
+Фронтенд дипломного проекта
