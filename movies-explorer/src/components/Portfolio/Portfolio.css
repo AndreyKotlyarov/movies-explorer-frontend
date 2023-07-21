@@ -1,5 +1,5 @@
 .portfolio {
-    min-width: 320px;
+    min-width: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -37,8 +37,7 @@
 
 }
 
-.portfolio__link,
-.portfolio__link-icon {
+.portfolio__link {
     color: #FFF;
     font-size: 18px;
     font-style: normal;
@@ -51,3 +50,22 @@
 
     padding: 0;
 }
+
+@media screen and (min-width: 768px) {
+    .portfolio {
+        padding: 0 50px 90px;
+    }
+
+    .portfolio__title {
+        font-size: 18px;
+        margin: 0 0 30px;
+    }
+
+    .portfolio__link {
+        font-size: 28px;
+        letter-spacing: -1.12px;
+        margin: 30px 0;
+    }
+}
+
+@media screen and (min-width: 1280px) {}

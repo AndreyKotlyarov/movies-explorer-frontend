@@ -1,4 +1,5 @@
 .about-me {
+    min-width: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -46,6 +47,7 @@
 }
 
 .about-me__link {
+    display: block;
     color: #FFF;
     font-size: 14px;
     font-style: normal;
@@ -54,3 +56,50 @@
     text-decoration: none;
     margin: 40px 0 0;
 }
+
+@media screen and (min-width: 768px) {
+    .about-me {
+        padding: 90px 50px;
+    }
+
+    .about-me__title {
+        font-size: 22px;
+        letter-spacing: -0.88px;
+        margin: 0 0 23px;
+    }
+
+    .about-me__article {
+        display: flex;
+        flex-direction: row-reverse;
+
+    }
+
+    .about-me__photo {
+        margin-top: 66px;
+        margin-left: 50px;
+        width: 255px;
+        height: 307px;
+    }
+
+    .about-me__paragraph-container {
+        margin-top: 60px;
+    }
+
+    .about-me__paragraph {
+        font-size: 12px;
+        line-height: 18px;
+        margin: 17px 0 0;
+    }
+
+    .about-me__paragraph-title {
+        margin: 0;
+        font-size: 40px;
+        letter-spacing: -1.6px;
+    }
+
+    .about-me__link {
+        margin: 90px 0 0;
+    }
+}
+
+@media screen and (min-width: 1280px) {}

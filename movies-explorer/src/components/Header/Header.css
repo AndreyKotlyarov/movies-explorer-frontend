@@ -1,21 +1,23 @@
 .header {
+    min-width: 100%;
     height: 74px;
-    min-width: 320px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #073042;
+    padding: 0 14px;
+    box-sizing: border-box;
 }
 
 .header__logo {
     width: 38px;
     height: 38px;
-    margin-left: 14px;
+    /* margin-left: 14px; */
 }
 
-.header__container {
+/* .header__container {
     margin-right: 14px;
-}
+} */
 
 .header__link {
     color: #FFF;
@@ -45,4 +47,27 @@
     line-height: 16px;
 
     cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+    .header {
+        padding: 0 30px;
+    }
+
+    .header__link {
+        font-size: 12px;
+    }
+
+    .header__button {
+        width: 76px;
+        height: 32px;
+        font-size: 12px;
+        margin-left: 30px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .header {
+        padding: 0 70px;
+    }
 }
