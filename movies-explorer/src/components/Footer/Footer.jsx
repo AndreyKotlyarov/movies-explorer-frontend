@@ -15,7 +15,7 @@ function Footer() {
             <Link className='footer__link'>Github</Link>
           </li>
         </ul>
-        <p className='footer__copyright'>&copy;2020</p>
+        <p className='footer__copyright'>&copy;2023</p>
       </div>
     </footer>
   );

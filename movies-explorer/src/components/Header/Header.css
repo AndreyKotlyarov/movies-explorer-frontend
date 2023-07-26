@@ -4,20 +4,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #073042;
+    background-color: #202020;
     padding: 0 14px;
     box-sizing: border-box;
+}
+
+.header_type_landing {
+    background-color: #073042;
 }
 
 .header__logo {
     width: 38px;
     height: 38px;
-    /* margin-left: 14px; */
 }
 
-/* .header__container {
-    margin-right: 14px;
-} */
 
 .header__link {
     color: #FFF;
@@ -30,7 +30,7 @@
     text-decoration: none;
 }
 
-.header__button {
+.header__login-button {
     width: 54px;
     height: 26px;
     border: none;
@@ -49,6 +49,40 @@
     cursor: pointer;
 }
 
+.header__profile-button {
+
+    background-color: #202020;
+    background-image: url('../../images/button-icon.svg');
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+    border-radius: 50px;
+    border: 2px solid #AAA;
+    width: 100px;
+    height: 32px;
+}
+
+.header__button-text {
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 0;
+    margin: 0 0 0 21px;
+}
+
+.header__navigation {
+    display: none;
+}
+
+.header__mobile-menu-button {
+    width: 40px;
+    height: 40px;
+    background-color: #202020;
+    background-image: url(../../images/header-icon.svg);
+    border: none;
+}
+
 @media screen and (min-width: 768px) {
     .header {
         padding: 0 30px;
@@ -58,16 +92,49 @@
         font-size: 12px;
     }
 
-    .header__button {
+    .header__login-button {
         width: 76px;
         height: 32px;
         font-size: 12px;
         margin-left: 30px;
+    }
+
+    .header__mobile-menu-button {
+        width: 44px;
+        height: 44px;
     }
 }
 
 @media screen and (min-width: 1280px) {
     .header {
         padding: 0 70px;
+    }
+
+    .header__navlink {
+        color: #FFF;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+        text-decoration: none;
+        cursor: pointer;
+        margin-left: 16px;
+    }
+
+    .header__navlink_active {
+        font-weight: 500;
+    }
+
+    .header__navigation {
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        background-color: #202020;
+
+
+    }
+
+    .header__mobile-menu-button {
+        display: none;
     }
 }

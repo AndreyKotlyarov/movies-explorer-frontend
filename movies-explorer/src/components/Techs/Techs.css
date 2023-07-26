@@ -108,4 +108,35 @@
 
 }
 
-@media screen and (min-width: 1280px) {}
+@media screen and (min-width: 1280px) {
+    .techs {
+        padding: 100px 70px;
+    }
+
+    .techs__title {
+        font-size: 22px;
+        letter-spacing: -0.88px;
+        margin: 0 0 23px;
+    }
+
+    .techs__paragraph-title {
+        margin: 90px 0 26px;
+    }
+
+    .techs__paragraph {
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: -0.56px;
+    }
+
+    .techs__table {
+        margin-top: 100px;
+        grid-template-columns: repeat(7, 90px);
+        grid-auto-rows: 60px;
+    }
+
+    .techs__table-cell {
+        font-size: 14px;
+        letter-spacing: -0.56px;
+    }
+}

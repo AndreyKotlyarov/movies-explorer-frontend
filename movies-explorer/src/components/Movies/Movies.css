@@ -1,0 +1,5 @@
+.movies__container {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
