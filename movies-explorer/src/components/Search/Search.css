@@ -1,11 +1,12 @@
 .search__container {
+    max-width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
 
 .search__input-container {
-    min-width: 100%;
+    max-width: 100%;
     padding: 0 19px;
     margin-top: 80px;
     box-sizing: border-box;
@@ -15,6 +16,7 @@
     height: 72px;
     background-color: #2F2F2F;
     border-radius: 9px;
+    position: relative;
 
 }
 
@@ -89,9 +91,76 @@
     transition: 0.3s;
 }
 
-.search__thumbler:checked:before {
+.search__thumbler:checked::before {
 
     background-color: #fff;
     left: 22px;
 
+}
+
+@media screen and (min-width: 768px) {
+    .search__container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #2F2F2F;
+        border-radius: 9px;
+        margin-top: 80px;
+        margin-bottom: 110px;
+    }
+
+    .search__input-container {
+        width: 100%;
+        margin-top: 0;
+        margin-left: 44px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .search__thumbler-container {
+        padding: 0 20px;
+        box-sizing: border-box;
+        min-height: 40px;
+        background-color: #2F2F2F;
+        border: none;
+        border-left: 1px solid #505050;
+        border-top-right-radius: 9px;
+        border-bottom-right-radius: 9px;
+
+    }
+
+    .search__input-container::before {
+        content: "";
+        width: 34px;
+        height: 34px;
+        background-image: url('../../images/lupa_and_pupa.svg');
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 20px;
+        left: -25px;
+    }
+
+    .search__thumbler-label {
+        font-size: 13px;
+        line-height: 18px;
+    }
+
+    .search__input {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .search__container {
+        margin-top: 70px;
+        margin-bottom: 70px;
+    }
+
+    .search__input-container {
+        padding-right: 30px;
+    }
+
+    .search__thumbler-container {
+        padding: 0 30px;
+    }
 }

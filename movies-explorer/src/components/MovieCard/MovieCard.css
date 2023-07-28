@@ -51,6 +51,47 @@
     margin: 14px auto;
 }
 
-.movie-card__save-button_active {
+.movie-card__save-button_type_active {
     background-color: #EE3465;
+    background-image: url(../../images/icon__saved.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.movie-card__save-button_type_delete {
+    background-image: url(../../images/icon__delete.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+
+}
+
+
+@media screen and (min-width: 768px) {
+    .movie-card__title {
+        font-size: 15px;
+        margin: 18px 0;
+    }
+
+    .movie-card__duration {
+        font-size: 13px;
+        margin: 18px 0;
+    }
+
+    .movie-card__save-button {
+        margin: 18px auto;
+    }
+
+    .movie-card__info {
+        padding: 0 18px;
+    }
+
+    .movie-card__image {
+        min-height: 190px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .movie-card__image {
+        min-height: 200px;
+    }
 }

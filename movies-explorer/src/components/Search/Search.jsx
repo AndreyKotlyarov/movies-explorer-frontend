@@ -1,7 +1,7 @@
 import './Search.css';
 function Search() {
   return (
-    <form className='search__container'>
+    <div className='search__container'>
       <div className='search__input-container'>
         <input className='search__input' type='text' placeholder='Фильм' />
         <button className='search__button' type='submit' />
@@ -12,7 +12,7 @@ function Search() {
           Короткометражки
         </label>
       </div>
-    </form>
+    </div>
   );
 }
 export default Search;
