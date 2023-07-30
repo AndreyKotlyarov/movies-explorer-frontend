@@ -17,7 +17,9 @@ function AboutMe() {
             Недавно начал кодить. С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс по веб-разработке, начал заниматься
             фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <Link className='about-me__link'>Github</Link>
+          <Link to='https://github.com/AndreyKotlyarov' target='_blank' className='about-me__link link'>
+            Github
+          </Link>
         </div>
       </div>
     </article>

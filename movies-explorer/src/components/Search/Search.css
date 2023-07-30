@@ -32,6 +32,10 @@
     outline: none;
 }
 
+.search__input::placeholder {
+    color: #8B8B8B;
+}
+
 .search__button {
     width: 34px;
     height: 34px;
@@ -70,6 +74,7 @@
     transition: 0.3s;
     position: relative;
     outline: none;
+    cursor: pointer;
 }
 
 

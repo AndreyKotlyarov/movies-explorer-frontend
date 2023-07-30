@@ -12,7 +12,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_active'></button>
+        <button className='movie-card__save-button movie-card__save-button_type_active button'></button>
       </li>
 
       <li className='movie-card'>
@@ -21,7 +21,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button'>Сохранить</button>
+        <button className='movie-card__save-button button'>Сохранить</button>
       </li>
 
       <li className='movie-card'>
@@ -30,7 +30,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image3} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_delete'></button>
+        <button className='movie-card__save-button movie-card__save-button_type_delete button'></button>
       </li>
       <li className='movie-card'>
         <div className='movie-card__info'>
@@ -38,7 +38,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_active'></button>
+        <button className='movie-card__save-button movie-card__save-button_type_active button'></button>
       </li>
 
       <li className='movie-card'>
@@ -47,7 +47,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button'>Сохранить</button>
+        <button className='movie-card__save-button button'>Сохранить</button>
       </li>
 
       <li className='movie-card'>
@@ -56,7 +56,7 @@ function MovieCard() {
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image3} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_delete'></button>
+        <button className='movie-card__save-button movie-card__save-button_type_delete button'></button>
       </li>
     </>
   );
