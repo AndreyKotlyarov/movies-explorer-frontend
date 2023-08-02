@@ -3,7 +3,7 @@ import Search from '../Search/Search';
 import './Movies.css';
 function Movies() {
   return (
-    <main className='movies__container'>
+    <main className='movies'>
       <Search />
       <MoviesList />
     </main>

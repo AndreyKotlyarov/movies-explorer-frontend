@@ -2,12 +2,14 @@ import MovieCard from '../MovieCard/MovieCard';
 import './MoviesList.css';
 function MoviesList() {
   return (
-    <>
-      <ul className='movies-list'>
+    <section className='movies__section'>
+      <ul className='movies__list'>
         <MovieCard />
       </ul>
-      <button className='movies__more-button button'>Ещё</button>
-    </>
+      <button type='button' className='movies__more-button button'>
+        Ещё
+      </button>
+    </section>
   );
 }
 export default MoviesList;

@@ -50,7 +50,6 @@ function App() {
             <>
               <Header isLoggedIn={true} />
               <Profile />
-              <Footer isLoggedIn={true} />
             </>
           }
         />

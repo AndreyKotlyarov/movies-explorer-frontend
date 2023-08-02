@@ -20,10 +20,10 @@ function AboutProject() {
         </div>
       </div>
       <div className='about-project__table'>
-        <div className='about-project__table-cell about-project__table-cell_green'>1 неделя</div>
-        <div className='about-project__table-cell about-project__table-cell_grey'>4 недели</div>
-        <div className='about-project__table-cell'>Back-end</div>
-        <div className='about-project__table-cell'>Front-end</div>
+        <span className='about-project__table-cell about-project__table-cell_green'>1 неделя</span>
+        <span className='about-project__table-cell about-project__table-cell_grey'>4 недели</span>
+        <span className='about-project__table-cell'>Back-end</span>
+        <span className='about-project__table-cell'>Front-end</span>
       </div>
     </article>
   );

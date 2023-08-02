@@ -3,11 +3,11 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 70px 18px;
+    padding: 70px 14px;
 }
 
 .techs__title-container {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #dadada;
 }
 
 .techs__title {
@@ -46,6 +46,9 @@
 }
 
 .techs__table {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
     margin-top: 50px;
     display: grid;
     grid-template-columns: repeat(2, 84px);

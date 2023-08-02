@@ -7,21 +7,21 @@ function Portfolio() {
       <ul className='portfolio__links'>
         <li className='portfolio__link-container'>
           <Link to='https://andreykotlyarov.github.io/how-to-learn/index.html' target='_blank' className='portfolio__link link'>
-            Статичный сайт
+            <span className='portfolio__link-span'>Статичный сайт</span>
+            <span className='portfolio__link-span'>↗</span>
           </Link>
-          <p className='portfolio__link'>↗</p>
         </li>
         <li className='portfolio__link-container'>
           <Link to='https://andreykotlyarov.github.io/russian-travel/index.html' target='_blank' className='portfolio__link link'>
-            Адаптивный сайт
+            <span className='portfolio__link-span'>Адаптивный сайт</span>
+            <span className='portfolio__link-span'>↗</span>
           </Link>
-          <p className='portfolio__link'>↗</p>
         </li>
         <li className='portfolio__link-container'>
           <Link to='https://andreykotlyarov.github.io/react-mesto-auth/' target='_blank' className='portfolio__link link'>
-            Одностраничное приложение
+            <span className='portfolio__link-span'>Одностраничное приложение</span>
+            <span className='portfolio__link-span'>↗</span>
           </Link>
-          <p className='portfolio__link'>↗</p>
         </li>
       </ul>
     </section>

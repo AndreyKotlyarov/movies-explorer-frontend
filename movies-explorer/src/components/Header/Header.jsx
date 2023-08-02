@@ -14,10 +14,12 @@ function Header({ isLoggedIn }) {
     setIsMobileMenuOpen(false);
   }
   return isLoggedIn ? (
-    <header className='header header'>
-      <img className='header__logo' src={logo} alt='логотип сайта' />
+    <header className='header'>
+      <Link to='/' className='header__link header__link_type_logo link'>
+        <img className='header__logo' src={logo} alt='логотип сайта' />
+      </Link>
       <Navigation isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
-      <button onClick={handleMobileMenuClick} className='header__mobile-menu-button' />
+      <button type='button' onClick={handleMobileMenuClick} className='header__mobile-menu-button' />
     </header>
   ) : (
     <header className='header header_type_landing'>
@@ -26,7 +28,7 @@ function Header({ isLoggedIn }) {
         <Link to='/signup' className='header__link link'>
           Регистрация
         </Link>
-        <button onClick={() => navigate('/signin')} className='header__login-button button'>
+        <button type='button' onClick={() => navigate('/signin')} className='header__login-button button'>
           Войти
         </button>
       </div>

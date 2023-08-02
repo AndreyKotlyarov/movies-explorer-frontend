@@ -4,10 +4,10 @@ function NotFoundPage() {
   const navigate = useNavigate();
   return (
     <main className='not-found'>
-      <div className='not-found__text-container'>
+      <section className='not-found__text-container'>
         <h1 className='not-found__title'>404</h1>
         <p className='not-found__message'>Страница не найдена</p>
-      </div>
+      </section>
       <Link className='not-found__link link' onClick={() => navigate(-1)}>
         Назад
       </Link>

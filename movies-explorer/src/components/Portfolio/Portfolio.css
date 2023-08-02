@@ -23,10 +23,7 @@
 }
 
 .portfolio__link-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+
     border-top: 1px solid #E6E6E6;
     margin: 0;
     padding: 0;
@@ -38,6 +35,10 @@
 }
 
 .portfolio__link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     color: #FFF;
     font-size: 18px;
     font-style: normal;

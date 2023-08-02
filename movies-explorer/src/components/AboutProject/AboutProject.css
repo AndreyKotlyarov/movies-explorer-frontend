@@ -60,6 +60,8 @@
  }
 
  .about-project__table-cell {
+     margin: 0;
+     padding: 0;
      display: flex;
      align-items: flex-end;
      justify-content: center;

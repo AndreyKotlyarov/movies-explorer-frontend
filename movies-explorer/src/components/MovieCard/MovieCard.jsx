@@ -8,55 +8,118 @@ function MovieCard() {
     <>
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_active button'></button>
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_active button'></button>
       </li>
 
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button button'>Сохранить</button>
+        <button type='button' className='movie-card__save-button button'>
+          Сохранить
+        </button>
       </li>
 
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image3} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_delete button'></button>
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_delete button'></button>
       </li>
+
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_active button'></button>
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_active button'></button>
       </li>
 
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button button'>Сохранить</button>
+        <button type='button' className='movie-card__save-button button'>
+          Сохранить
+        </button>
       </li>
 
       <li className='movie-card'>
         <div className='movie-card__info'>
-          <h3 className='movie-card__title'>В погоне за Бенкси</h3>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
         </div>
         <img className='movie-card__image' src={image3} alt='В погоне за Бенкси' />
-        <button className='movie-card__save-button movie-card__save-button_type_delete button'></button>
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_delete button'></button>
+      </li>
+
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_active button'></button>
+      </li>
+
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button button'>
+          Сохранить
+        </button>
+      </li>
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button button'>
+          Сохранить
+        </button>
+      </li>
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image3} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_delete button'></button>
+      </li>
+
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button movie-card__save-button_type_active button'></button>
+      </li>
+
+      <li className='movie-card'>
+        <div className='movie-card__info'>
+          <h2 className='movie-card__title'>В погоне за Бенкси</h2>
+          <p className='movie-card__duration'>27 минут</p>
+        </div>
+        <img className='movie-card__image' src={image2} alt='В погоне за Бенкси' />
+        <button type='button' className='movie-card__save-button button'>
+          Сохранить
+        </button>
       </li>
     </>
   );
