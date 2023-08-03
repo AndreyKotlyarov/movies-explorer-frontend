@@ -26,7 +26,7 @@ function MovieCard() {
         </button>
       </li>
 
-      <li className='movie-card'>
+      {/* <li className='movie-card'>
         <div className='movie-card__info'>
           <h2 className='movie-card__title'>В погоне за Бенкси</h2>
           <p className='movie-card__duration'>27 минут</p>
@@ -120,7 +120,7 @@ function MovieCard() {
         <button type='button' className='movie-card__save-button button'>
           Сохранить
         </button>
-      </li>
+      </li> */}
     </>
   );
 }

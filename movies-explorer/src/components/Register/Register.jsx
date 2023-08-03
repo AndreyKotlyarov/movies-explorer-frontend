@@ -18,7 +18,7 @@ function Register() {
               Имя
             </label>
             <div className='register__input-area'>
-              <input className='register__input' type='text' id='name__input' placeholder='Виталий' />
+              <input className='register__input input' type='text' minLength='2' maxLength='30' id='name__input' placeholder='Виталий' />
             </div>
           </li>
           <li className='register__input-container'>
@@ -26,7 +26,7 @@ function Register() {
               E-mail
             </label>
             <div className='register__input-area'>
-              <input className='register__input' type='t ext' id='email__input' placeholder='pochta@yandex.ru' />
+              <input className='register__input input' type='email' id='email__input' placeholder='pochta@yandex.ru' />
             </div>
           </li>
           <li className='register__input-container'>
@@ -34,7 +34,7 @@ function Register() {
               Пароль
             </label>
             <div className='register__input-area'>
-              <input className='register__input' type='text' id='password__input' placeholder='Пароль' />
+              <input className='register__input input' type='text' minLength='8' maxLength='30' id='password__input' placeholder='Пароль' />
             </div>
             <span className='register__error-message register__error-message_active'>Что-то пошло не так...</span>
           </li>

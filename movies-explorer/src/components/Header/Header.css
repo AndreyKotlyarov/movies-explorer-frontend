@@ -58,6 +58,7 @@
     background-color: #202020;
     background-image: url(../../images/header-icon.svg);
     border: none;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
@@ -85,7 +86,6 @@
 @media screen and (min-width: 1280px) {
     .header {
         padding: 0 70px;
-        min-width: 1280px;
     }
 
     .header__mobile-menu-button {

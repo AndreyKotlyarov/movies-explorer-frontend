@@ -9,6 +9,7 @@
     background-image: url(../../images/landing-logo.svg);
     background-repeat: no-repeat;
     background-position: bottom 40px center;
+    background-size: auto 230px;
 }
 
 .promo__title {

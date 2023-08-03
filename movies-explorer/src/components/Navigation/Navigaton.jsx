@@ -1,7 +1,13 @@
 import './Navigation.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 function Navigation({ isOpen, onClose }) {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [isOpen]);
   return (
     <nav className={`navigation ${isOpen ? 'navigation_type_mobile' : ''}`}>
       <div className='navigation__mobile-container'>
@@ -23,7 +29,7 @@ function Navigation({ isOpen, onClose }) {
           </li>
         </ul>
         <button type='button' onClick={() => navigate('/profile')} className='navigation__profile-button button'>
-          <p className='navigation__button-text'>Аккаунт</p>
+          <span className='navigation__button-text'>Аккаунт</span>
         </button>
         <button type='button' onClick={onClose} className='navigation__close-button button' />
       </div>

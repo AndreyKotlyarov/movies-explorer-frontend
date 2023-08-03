@@ -12,14 +12,16 @@ function Header({ isLoggedIn }) {
   }
   function handleMobileMenuClose() {
     setIsMobileMenuOpen(false);
+    document.body.style.overflow = 'visible';
   }
+
   return isLoggedIn ? (
     <header className='header'>
       <Link to='/' className='header__link header__link_type_logo link'>
         <img className='header__logo' src={logo} alt='логотип сайта' />
       </Link>
       <Navigation isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
-      <button type='button' onClick={handleMobileMenuClick} className='header__mobile-menu-button' />
+      <button type='button' onClick={handleMobileMenuClick} className='header__mobile-menu-button button' />
     </header>
   ) : (
     <header className='header header_type_landing'>

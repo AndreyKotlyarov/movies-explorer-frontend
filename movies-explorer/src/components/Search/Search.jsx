@@ -4,7 +4,7 @@ function Search() {
     <section className='search'>
       <form className='search__form'>
         <div className='search__input-container'>
-          <input className='search__input' type='text' placeholder='Фильм' />
+          <input className='search__input input' required type='text' placeholder='Фильм' />
           <button className='search__button button' type='submit' />
         </div>
         <div className='search__thumbler-container'>

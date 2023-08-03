@@ -7,18 +7,18 @@ function Profile() {
   return (
     <main className='profile'>
       <h1 className='profile__title'>Привет, {username} </h1>
-      <form className='profile__form' action=''>
+      <form className='profile__form' action='#'>
         <div className='profile__input-container'>
           <label className='profile__input-label' htmlFor='input__name'>
             Имя
           </label>
-          <input id='input__name' className='profile__input' type='text' placeholder={username} />
+          <input id='input__name' className='profile__input input' minLength='2' maxLength='30' type='text' placeholder={username} />
         </div>
         <div className='profile__input-container'>
           <label className='profile__input-label' htmlFor='input__email'>
             E-mail
           </label>
-          <input id='input__email' className='profile__input' type='text' placeholder={email} />
+          <input id='input__email' className='profile__input input' type='text' placeholder={email} />
         </div>
         <section className='profile__links-section'>
           <button type='submit' className='profile__submit-button button'>

@@ -18,7 +18,7 @@ function Login() {
               E-mail
             </label>
             <div className='login__input-area'>
-              <input className='login__input' type='email' id='email__input' placeholder='Электронная почта' />
+              <input className='login__input input' type='email' id='email__input' placeholder='Электронная почта' />
             </div>
           </li>
           <li className='login__input-container'>
@@ -26,7 +26,7 @@ function Login() {
               Пароль
             </label>
             <div className='login__input-area'>
-              <input className='login__input' type='text' id='password__input' placeholder='Пароль' />
+              <input className='login__input input' type='text' minLength='8' maxLength='30' id='password__input' placeholder='Пароль' />
             </div>
             <span className='login__error-message'>Что-то пошло не так...</span>
           </li>
