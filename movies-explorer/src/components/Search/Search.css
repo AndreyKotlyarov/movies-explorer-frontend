@@ -1,0 +1,192 @@
+.search {
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.search__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.search__input-container {
+    max-width: 100%;
+    padding: 0 19px;
+    margin-top: 80px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    background-color: #2F2F2F;
+    border-radius: 9px;
+    position: relative;
+
+}
+
+.search__input {
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    color: #8B8B8B;
+    background-color: #2F2F2F;
+    border: none;
+    outline: none;
+}
+
+.search__input::placeholder {
+    color: #8B8B8B;
+}
+
+.search__button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background-color: #4285F4;
+    background-image: url(../../images/lupa_and_pupa\ copy.svg);
+    color: #fff;
+    cursor: pointer;
+
+}
+
+.search__thumbler-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #424242;
+    min-height: 110px;
+
+}
+
+.search__thumbler-label {
+    color: #FFF;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 0 0 0 13px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search__thumbler-label:hover {
+    opacity: 0.7;
+}
+
+.search__thumbler {
+    width: 36px;
+    height: 16px;
+    appearance: none;
+    background-color: #EBEBEB;
+    border-radius: 10px;
+    transition: 0.3s;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search__thumbler:hover {
+    outline: 2px solid #3DDC84;
+}
+
+
+.search__thumbler:checked {
+    background-color: #3DDC84
+}
+
+.search__thumbler::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #F5F5F5;
+    box-sizing: border-box;
+    border: 1px solid #C4C4C4;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+.search__thumbler:checked::before {
+
+    background-color: #fff;
+    left: 22px;
+
+}
+
+@media screen and (min-width: 768px) {
+    .search {
+
+        background-color: #2F2F2F;
+        border-radius: 9px;
+        margin-top: 80px;
+        margin-bottom: 110px;
+    }
+
+    .search__form {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .search__input-container {
+        width: 100%;
+        margin-top: 0;
+        margin-left: 44px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .search__thumbler-container {
+        padding: 0 20px;
+        box-sizing: border-box;
+        min-height: 40px;
+        background-color: #2F2F2F;
+        border: none;
+        border-left: 1px solid #505050;
+        border-top-right-radius: 9px;
+        border-bottom-right-radius: 9px;
+
+    }
+
+    .search__input-container::before {
+        content: "";
+        width: 34px;
+        height: 34px;
+        background-image: url('../../images/lupa_and_pupa.svg');
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 20px;
+        left: -25px;
+    }
+
+    .search__thumbler-label {
+        font-size: 13px;
+        line-height: 18px;
+    }
+
+    .search__input {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .search {
+        margin-top: 70px;
+        margin-bottom: 70px;
+    }
+
+    .search__input-container {
+        padding-right: 30px;
+    }
+
+    .search__thumbler-container {
+        padding: 0 30px;
+    }
+}

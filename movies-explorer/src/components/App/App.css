@@ -1,0 +1,42 @@
+@import url(../../vendor/fonts/fonts.css);
+
+.App {
+  min-width: 320px;
+  max-width: 1280px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+  position: relative;
+}
+
+.link {
+  transition: 0.3s;
+}
+
+.button {
+  transition: 0.3s;
+}
+
+.input {
+  transition: 0.3s;
+}
+
+.link:hover {
+  opacity: 0.7;
+}
+
+.button:hover {
+  opacity: 0.7;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.input:focus {
+  background-color: #3b3b3b;
+}
