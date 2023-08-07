@@ -1,11 +1,11 @@
 import MoviesList from '../MoviesList/MoviesList';
 import Search from '../Search/Search';
 import './Movies.css';
-function Movies() {
+function Movies({ moviesCards }) {
   return (
     <main className='movies'>
       <Search />
-      <MoviesList />
+      <MoviesList moviesCards={moviesCards} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import './Profile.css';
 import { Link } from 'react-router-dom';
-function Profile() {
+function Profile({ logOut }) {
   const username = 'Виталий';
   const email = 'pochta@yandex.ru';
 
@@ -24,7 +24,7 @@ function Profile() {
           <button type='submit' className='profile__submit-button button'>
             Редактировать
           </button>
-          <Link to='/' className='profile__link link'>
+          <Link to={'/'} onClick={logOut} className='profile__link link'>
             Выйти из аккаунта
           </Link>
         </section>

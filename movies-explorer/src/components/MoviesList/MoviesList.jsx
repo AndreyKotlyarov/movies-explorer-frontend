@@ -1,7 +1,7 @@
 import MovieCard from '../MovieCard/MovieCard';
 import './MoviesList.css';
 import { useLocation } from 'react-router-dom';
-function MoviesList() {
+function MoviesList({ moviesCards }) {
   const location = useLocation();
   return location.pathname === '/saved-movies' ? (
     <section className='saved-movies__section'>
@@ -12,7 +12,9 @@ function MoviesList() {
   ) : (
     <section className='movies__section'>
       <ul className='movies__list'>
-        <MovieCard />
+        {moviesCards.map((movie) => {
+          return <MovieCard movie={movie} />;
+        })}
       </ul>
       <button type='button' className='movies__more-button button'>
         Ещё

@@ -1,8 +1,26 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Register.css';
 import logo from '../../images/site-logo.svg';
-import { Link } from 'react-router-dom';
 
-function Register() {
+function Register({ registerUser }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    registerUser(email, password);
+  }
   return (
     <main className='register'>
       <section className='register__section'>
@@ -11,14 +29,23 @@ function Register() {
         </Link>
         <h1 className='register__title'>Добро пожаловать!</h1>
       </section>
-      <form className='register__form'>
+      <form className='register__form' onSubmit={handleSubmit}>
         <ul className='register__content'>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='name__input'>
               Имя
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='text' minLength='2' maxLength='30' id='name__input' placeholder='Виталий' />
+              <input
+                value={name}
+                onChange={handleNameChange}
+                className='register__input input'
+                type='text'
+                minLength='2'
+                maxLength='30'
+                id='name__input'
+                placeholder='Виталий'
+              />
             </div>
           </li>
           <li className='register__input-container'>
@@ -26,7 +53,14 @@ function Register() {
               E-mail
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='email' id='email__input' placeholder='pochta@yandex.ru' />
+              <input
+                value={email}
+                onChange={handleEmailChange}
+                className='register__input input'
+                type='email'
+                id='email__input'
+                placeholder='pochta@yandex.ru'
+              />
             </div>
           </li>
           <li className='register__input-container'>
@@ -34,7 +68,16 @@ function Register() {
               Пароль
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='text' minLength='8' maxLength='30' id='password__input' placeholder='Пароль' />
+              <input
+                value={password}
+                onChange={handlePasswordChange}
+                className='register__input input'
+                type='text'
+                minLength='8'
+                maxLength='30'
+                id='password__input'
+                placeholder='Пароль'
+              />
             </div>
             <span className='register__error-message register__error-message_active'>Что-то пошло не так...</span>
           </li>

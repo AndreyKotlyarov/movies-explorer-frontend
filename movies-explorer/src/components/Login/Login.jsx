@@ -1,8 +1,22 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css';
 import logo from '../../images/site-logo.svg';
-import { Link } from 'react-router-dom';
 
-function Login() {
+function Login({ loginUser }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    loginUser(email, password);
+  }
   return (
     <main className='login'>
       <section className='login__section'>
@@ -11,14 +25,21 @@ function Login() {
         </Link>
         <h1 className='login__title'>Рады видеть!</h1>
       </section>
-      <form className='login__form'>
+      <form className='login__form' onSubmit={handleSubmit}>
         <ul className='login__content'>
           <li className='login__input-container'>
             <label className='login__input-label' htmlFor='email__input'>
               E-mail
             </label>
             <div className='login__input-area'>
-              <input className='login__input input' type='email' id='email__input' placeholder='Электронная почта' />
+              <input
+                value={email}
+                onChange={handleEmailChange}
+                className='login__input input'
+                type='email'
+                id='email__input'
+                placeholder='Электронная почта'
+              />
             </div>
           </li>
           <li className='login__input-container'>
@@ -26,7 +47,16 @@ function Login() {
               Пароль
             </label>
             <div className='login__input-area'>
-              <input className='login__input input' type='text' minLength='8' maxLength='30' id='password__input' placeholder='Пароль' />
+              <input
+                value={password}
+                onChange={handlePasswordChange}
+                className='login__input input'
+                type='text'
+                minLength='8'
+                maxLength='30'
+                id='password__input'
+                placeholder='Пароль'
+              />
             </div>
             <span className='login__error-message'>Что-то пошло не так...</span>
           </li>

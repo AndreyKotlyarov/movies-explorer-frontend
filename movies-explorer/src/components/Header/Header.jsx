@@ -1,10 +1,11 @@
 import './Header.css';
 import logo from '../../images/site-logo.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Navigation from '../Navigation/Navigaton';
 import { useState } from 'react';
 
 function Header({ isLoggedIn }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   function handleMobileMenuClick() {
@@ -16,12 +17,20 @@ function Header({ isLoggedIn }) {
   }
 
   return isLoggedIn ? (
-    <header className='header'>
+    <header className={location.pathname === '/' ? 'header header_type_landing' : 'header'}>
       <Link to='/' className='header__link header__link_type_logo link'>
         <img className='header__logo' src={logo} alt='логотип сайта' />
       </Link>
       <Navigation isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
-      <button type='button' onClick={handleMobileMenuClick} className='header__mobile-menu-button button' />
+      <button
+        type='button'
+        onClick={handleMobileMenuClick}
+        className={
+          location.pathname === '/'
+            ? 'header__mobile-menu-button header__mobile-menu-button_type_landing button'
+            : 'header__mobile-menu-button button'
+        }
+      />
     </header>
   ) : (
     <header className='header header_type_landing'>

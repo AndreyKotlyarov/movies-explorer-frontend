@@ -1,15 +1,16 @@
 import './Navigation.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 function Navigation({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     }
   }, [isOpen]);
   return (
-    <nav className={`navigation ${isOpen ? 'navigation_type_mobile' : ''}`}>
+    <nav className={`navigation ${isOpen ? 'navigation_type_mobile' : ''} ${location.pathname === '/' ? 'navigation_type_landing' : ''}`}>
       <div className='navigation__mobile-container'>
         <ul className='navigation__links-container'>
           <li className='navigation__link-container navigation__link-container_type_hidden'>
