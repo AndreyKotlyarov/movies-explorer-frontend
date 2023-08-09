@@ -32,7 +32,7 @@
     /* min-width: 320px; */
     padding: 0;
     list-style-type: none;
-    margin: 80px auto 245px;
+    margin: 80px auto 221px;
 }
 
 .login__input-container {
@@ -74,6 +74,8 @@
 }
 
 .login__error-message {
+    max-width: 260px;
+    height: 24px;
     color: #EE3465;
     font-size: 10px;
     font-style: normal;
@@ -82,7 +84,6 @@
     padding: 0;
     margin-top: 10px;
     visibility: hidden;
-
 }
 
 .login__error-message_active {
@@ -164,7 +165,7 @@
     }
 
     .login__content {
-        margin: 40px auto 157px;
+        margin: 40px auto 133px;
     }
 
     .login__button {

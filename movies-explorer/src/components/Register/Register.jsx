@@ -1,25 +1,12 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import './Register.css';
 import logo from '../../images/site-logo.svg';
-
 function Register({ registerUser }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
-  }
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
+  const { values, handleChange, errors, isValid } = useFormAndValidation();
   function handleSubmit(e) {
     e.preventDefault();
-    registerUser(email, password);
+    registerUser(values.email, values.password, values.name);
   }
   return (
     <main className='register'>
@@ -37,14 +24,15 @@ function Register({ registerUser }) {
             </label>
             <div className='register__input-area'>
               <input
-                value={name}
-                onChange={handleNameChange}
+                value={values.name || ''}
+                onChange={handleChange}
+                name='name'
                 className='register__input input'
                 type='text'
                 minLength='2'
                 maxLength='30'
                 id='name__input'
-                placeholder='Виталий'
+                placeholder='Ваше имя'
               />
             </div>
           </li>
@@ -54,12 +42,13 @@ function Register({ registerUser }) {
             </label>
             <div className='register__input-area'>
               <input
-                value={email}
-                onChange={handleEmailChange}
+                value={values.email || ''}
+                onChange={handleChange}
+                name='email'
                 className='register__input input'
                 type='email'
                 id='email__input'
-                placeholder='pochta@yandex.ru'
+                placeholder='Ваша электронная почта'
               />
             </div>
           </li>
@@ -69,8 +58,9 @@ function Register({ registerUser }) {
             </label>
             <div className='register__input-area'>
               <input
-                value={password}
-                onChange={handlePasswordChange}
+                value={values.password || ''}
+                onChange={handleChange}
+                name='password'
                 className='register__input input'
                 type='text'
                 minLength='8'
@@ -79,10 +69,10 @@ function Register({ registerUser }) {
                 placeholder='Пароль'
               />
             </div>
-            <span className='register__error-message register__error-message_active'>Что-то пошло не так...</span>
+            <span className='register__error-message register__error-message_active'>{errors.name || errors.email || errors.password}</span>
           </li>
         </ul>
-        <button className='register__button button' type='submit'>
+        <button className={`register__button button ${isValid ? '' : 'button_type_disabled'}`} type='submit' disabled={!isValid}>
           Зарегистрироваться
         </button>
       </form>

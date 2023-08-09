@@ -1,5 +1,5 @@
 import './Navigation.css';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 function Navigation({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -14,22 +14,45 @@ function Navigation({ isOpen, onClose }) {
       <div className='navigation__mobile-container'>
         <ul className='navigation__links-container'>
           <li className='navigation__link-container navigation__link-container_type_hidden'>
-            <Link to='/' className='navigation__navlink navigation__navlink_type_hidden link'>
+            <NavLink
+              to='/'
+              onClick={onClose}
+              className={({ isActive }) =>
+                isActive
+                  ? 'navigation__navlink navigation__navlink_type_hidden navigation__navlink_active link'
+                  : 'navigation__navlink navigation__navlink_type_hidden link'
+              }
+            >
               Главная
-            </Link>
+            </NavLink>
           </li>
           <li className='navigation__link-container'>
-            <Link to='/movies' className='navigation__navlink navigation__navlink_active link'>
+            <NavLink
+              to='/movies'
+              onClick={onClose}
+              className={({ isActive }) => (isActive ? 'navigation__navlink navigation__navlink_active link' : 'navigation__navlink link')}
+            >
               Фильмы
-            </Link>
+            </NavLink>
           </li>
           <li className='navigation__link-container'>
-            <Link to='/saved-movies' className='navigation__navlink link'>
+            <NavLink
+              to='/saved-movies'
+              onClick={onClose}
+              className={({ isActive }) => (isActive ? 'navigation__navlink navigation__navlink_active link' : 'navigation__navlink link')}
+            >
               Сохранённые фильмы
-            </Link>
+            </NavLink>
           </li>
         </ul>
-        <button type='button' onClick={() => navigate('/profile')} className='navigation__profile-button button'>
+        <button
+          type='button'
+          onClick={() => {
+            navigate('/profile');
+            onClose();
+          }}
+          className='navigation__profile-button button'
+        >
           <span className='navigation__button-text'>Аккаунт</span>
         </button>
         <button type='button' onClick={onClose} className='navigation__close-button button' />

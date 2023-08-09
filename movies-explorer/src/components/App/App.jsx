@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
 
 import Main from '../Main/Main.jsx';
 import Movies from '../Movies/Movies';
@@ -21,8 +22,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState('');
   const [userData, setUserData] = useState({
+    name: '',
     email: '',
-    password: '',
+    id: '',
   });
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -33,21 +35,23 @@ function App() {
     if (!token) {
       return;
     }
+    mainApi.setToken(token);
     mainApi
-      .getUserData(token)
+      .getCurrentUser()
       .then((data) => {
-        setUserData(data.data);
+        setUserData({ name: data.name, email: data.email, id: data._id });
         setIsLoggedIn(true);
         // navigate('/movies');
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [token, navigate]);
+  }, [token]);
 
-  const registerUser = (email, password) => {
+  const registerUser = (email, password, name) => {
+    debugger;
     mainApi
-      .register(email, password)
+      .register(email, password, name)
       .then((res) => {
         localStorage.setItem('token', res.token);
         setToken(res.token);
@@ -71,30 +75,29 @@ function App() {
       });
   };
 
-  const logOut = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setToken('');
-    setUserData({
-      password: '',
-      email: '',
-    });
-    navigate('/');
-  };
-
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
+  function handleUpdateUser(name, email) {
+    debugger;
     mainApi
-      .getUserData()
+      .patchUserData(name, email)
       .then((userData) => {
-        setCurrentUser(userData);
+        setUserData(userData);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
+
+  const logOut = () => {
+    localStorage.removeItem('token');
+    setToken('');
+    setUserData({
+      name: '',
+      email: '',
+      id: '',
+    });
+    setIsLoggedIn(false);
+    navigate('/');
+  };
 
   const [moviesCards, setMoviesCards] = useState([]);
   // загружаем все фильмы с Beatfilms
@@ -126,30 +129,30 @@ function App() {
           <Route
             path='/movies'
             element={
-              <>
+              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
                 <Movies moviesCards={moviesCards} />
                 <Footer />
-              </>
+              </ProtectedRouteElement>
             }
           />
           <Route
             path='/saved-movies'
             element={
-              <>
+              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
                 <SavedMovies />
                 <Footer />
-              </>
+              </ProtectedRouteElement>
             }
           />
           <Route
             path='/profile'
             element={
-              <>
+              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <Profile logOut={logOut} />
-              </>
+                <Profile logOut={logOut} onUserUpdate={handleUpdateUser} userData={userData} />
+              </ProtectedRouteElement>
             }
           />
           <Route path='/signup' element={<Register registerUser={registerUser} />} />

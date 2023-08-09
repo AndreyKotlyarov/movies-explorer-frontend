@@ -4,7 +4,6 @@
     padding: 56px 30px 30px;
     display: flex;
     flex-direction: column;
-
 }
 
 .register__section {
@@ -32,7 +31,7 @@
     /* min-width: 320px; */
     padding: 0;
     list-style-type: none;
-    margin: 80px auto 157px;
+    margin: 80px auto 133px;
 }
 
 .register__input-container {
@@ -74,6 +73,8 @@
 }
 
 .register__error-message {
+    max-width: 260px;
+    height: 24px;
     color: #EE3465;
     font-size: 10px;
     font-style: normal;
@@ -164,7 +165,7 @@
     }
 
     .register__content {
-        margin: 40px auto 70px;
+        margin: 40px auto 46px;
     }
 
     .register__button {

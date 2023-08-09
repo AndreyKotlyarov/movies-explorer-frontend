@@ -1,27 +1,61 @@
-import './Profile.css';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-function Profile({ logOut }) {
-  const username = 'Виталий';
-  const email = 'pochta@yandex.ru';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import './Profile.css';
+function Profile({ logOut, onUserUpdate, userData }) {
+  const { values, handleChange, errors, setValues, isValid } = useFormAndValidation();
+  const userName = userData.name;
+  const userEmail = userData.email;
 
+  useEffect(() => {
+    setValues({
+      name: userName,
+      email: userEmail,
+    });
+  }, [userName, userEmail, setValues]);
+  function handleSubmit(e) {
+    e.preventDefault();
+    onUserUpdate(values.name, values.email);
+  }
   return (
     <main className='profile'>
-      <h1 className='profile__title'>Привет, {username} </h1>
-      <form className='profile__form' action='#'>
+      <h1 className='profile__title'>Привет, {userName} </h1>
+      <form className='profile__form' action='#' onSubmit={handleSubmit}>
         <div className='profile__input-container'>
           <label className='profile__input-label' htmlFor='input__name'>
             Имя
           </label>
-          <input id='input__name' className='profile__input input' minLength='2' maxLength='30' type='text' placeholder={username} />
+          <input
+            value={values.name || ''}
+            onChange={handleChange}
+            name='name'
+            id='input__name'
+            className='profile__input input'
+            minLength='2'
+            maxLength='30'
+            type='text'
+            placeholder='Ваше имя'
+          />
         </div>
         <div className='profile__input-container'>
           <label className='profile__input-label' htmlFor='input__email'>
             E-mail
           </label>
-          <input id='input__email' className='profile__input input' type='text' placeholder={email} />
+          <input
+            name='email'
+            value={values.email || ''}
+            onChange={handleChange}
+            id='input__email'
+            className='profile__input input'
+            type='email'
+            placeholder='Электронная почта'
+          />
         </div>
+
+        <span className='profile__error-message profile__error-message_active'>{errors.email || errors.name || ''}</span>
+
         <section className='profile__links-section'>
-          <button type='submit' className='profile__submit-button button'>
+          <button type='submit' className={`profile__submit-button button ${isValid ? '' : 'button_type_disabled'}`} disabled={!isValid}>
             Редактировать
           </button>
           <Link to={'/'} onClick={logOut} className='profile__link link'>

@@ -1,6 +1,7 @@
 class MainApi {
-    constructor({ baseUrl }) {
+    constructor({ baseUrl, headers }) {
         this._baseUrl = baseUrl;
+        this._headers = headers;
     }
 
     _getJson(res) {
@@ -10,44 +11,52 @@ class MainApi {
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
-    register(email, password) {
+    setToken(token) { this._headers.Authorization = `Bearer ${token}`; }
+
+    register(email, password, name) {
         return fetch(`${this._baseUrl}/signup`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: this._headers,
             body: JSON.stringify({
-                password: password,
                 email: email,
+                password: password,
+                name: name,
             }),
         }).then(this._getJson);
     }
     authorize(email, password) {
         return fetch(`${this._baseUrl}/signin`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: this._headers,
             body: JSON.stringify({
-                password: password,
                 email: email,
+                password: password,
             }),
         }).then(this._getJson);
     }
-    getUserData(token) {
+    getCurrentUser() {
         return fetch(`${this._baseUrl}/users/me`, {
-            method: "GET",
-            headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            headers: this._headers,
         }).then(this._getJson);
     }
-    patchUserData(newData) {
-        return fetch(`${this._baseUrl}/me`, {
+
+    patchUserData(name, email) {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
-                name: newData.name,
-                about: newData.about,
+                name: name,
+                email: email,
             }),
         }).then(this._getJson);
     }
 }
 
-const mainApi = new MainApi({ baseUrl: "https://api.moviesexplorer.nomoredomains.work" });
+const mainApi = new MainApi({
+    baseUrl: "https://api.moviesexplorer.nomoredomains.work",
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
 
 export default mainApi;

@@ -1,21 +1,13 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import './Login.css';
 import logo from '../../images/site-logo.svg';
 
 function Login({ loginUser }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
-  }
+  const { values, handleChange, errors, isValid } = useFormAndValidation();
   function handleSubmit(e) {
     e.preventDefault();
-    loginUser(email, password);
+    loginUser(values.email, values.password);
   }
   return (
     <main className='login'>
@@ -33,8 +25,9 @@ function Login({ loginUser }) {
             </label>
             <div className='login__input-area'>
               <input
-                value={email}
-                onChange={handleEmailChange}
+                name='email'
+                value={values.email || ''}
+                onChange={handleChange}
                 className='login__input input'
                 type='email'
                 id='email__input'
@@ -48,8 +41,9 @@ function Login({ loginUser }) {
             </label>
             <div className='login__input-area'>
               <input
-                value={password}
-                onChange={handlePasswordChange}
+                name='password'
+                value={values.password || ''}
+                onChange={handleChange}
                 className='login__input input'
                 type='text'
                 minLength='8'
@@ -58,10 +52,10 @@ function Login({ loginUser }) {
                 placeholder='Пароль'
               />
             </div>
-            <span className='login__error-message'>Что-то пошло не так...</span>
+            <span className='login__error-message login__error-message_active'>{errors.email || errors.password || ''}</span>
           </li>
         </ul>
-        <button className='login__button button' type='submit'>
+        <button className={`login__button button ${isValid ? '' : 'button_type_disabled'}`} type='submit' disabled={!isValid}>
           Войти
         </button>
       </form>
