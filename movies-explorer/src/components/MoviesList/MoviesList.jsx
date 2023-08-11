@@ -3,6 +3,7 @@ import './MoviesList.css';
 import { useLocation } from 'react-router-dom';
 function MoviesList({ moviesCards }) {
   const location = useLocation();
+
   return location.pathname === '/saved-movies' ? (
     <section className='saved-movies__section'>
       <ul className='saved-movies__list'>{/* <MovieCard /> */}</ul>
@@ -11,12 +12,9 @@ function MoviesList({ moviesCards }) {
     <section className='movies__section'>
       <ul className='movies__list'>
         {moviesCards.map((movie) => {
-          return <MovieCard movie={movie} />;
+          return <MovieCard movie={movie} key={movie.id} />;
         })}
       </ul>
-      <button type='button' className='movies__more-button button'>
-        Ещё
-      </button>
     </section>
   );
 }

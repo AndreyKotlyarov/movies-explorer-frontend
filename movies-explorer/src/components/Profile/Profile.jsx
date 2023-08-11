@@ -34,7 +34,7 @@ function Profile({ logOut, onUserUpdate, userData }) {
             minLength='2'
             maxLength='30'
             type='text'
-            placeholder='Ваше имя'
+            placeholder='Латиница, кириллица, пробел или дефис'
           />
         </div>
         <div className='profile__input-container'>
