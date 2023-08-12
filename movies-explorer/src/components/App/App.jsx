@@ -49,7 +49,6 @@ function App() {
   }, [token]);
 
   const registerUser = (email, password, name) => {
-    debugger;
     mainApi
       .register(email, password, name)
       .then((res) => {
@@ -76,7 +75,6 @@ function App() {
   };
 
   function handleUpdateUser(name, email) {
-    debugger;
     mainApi
       .patchUserData(name, email)
       .then((userData) => {
@@ -141,7 +139,7 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <SavedMovies />
+                <SavedMovies moviesCards={moviesCards} />
                 <Footer />
               </ProtectedRouteElement>
             }
