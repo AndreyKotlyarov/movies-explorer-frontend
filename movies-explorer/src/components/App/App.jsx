@@ -97,18 +97,29 @@ function App() {
     navigate('/');
   };
 
-  const [moviesCards, setMoviesCards] = useState([]);
-  // загружаем все фильмы с Beatfilms
-  useEffect(() => {
-    moviesApi
-      .getMoviesCards()
-      .then((moviesCards) => {
-        setMoviesCards(moviesCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // const [moviesCards, setMoviesCards] = useState([]);
+
+  // // загружаем все фильмы с Beatfilms
+  // useEffect(() => {
+  //   moviesApi
+  //     .getMoviesCards()
+  //     .then((moviesCards) => {
+  //       setMoviesCards(moviesCards);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  // function downloadMovies() {
+  //   moviesApi
+  //     .getMoviesCards()
+  //     .then((moviesCards) => {
+  //       setMoviesCards(moviesCards);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -129,7 +140,7 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <Movies moviesCards={moviesCards} />
+                <Movies />
                 <Footer />
               </ProtectedRouteElement>
             }
@@ -139,7 +150,7 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <SavedMovies moviesCards={moviesCards} />
+                <SavedMovies />
                 <Footer />
               </ProtectedRouteElement>
             }

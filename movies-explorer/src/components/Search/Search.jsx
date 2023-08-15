@@ -14,7 +14,7 @@ function Search({ findMovies, handleCheckbox }) {
 
   return (
     <section className='search'>
-      <form className='search__form' onSubmit={handleSubmit}>
+      <form className='search__form' onSubmit={handleSubmit} noValidate>
         <div className='search__input-container'>
           <input value={searchQuery} onChange={handleSetSearchQuery} className='search__input input' required type='text' placeholder='Фильм' />
           <button className='search__button button' type='submit' />

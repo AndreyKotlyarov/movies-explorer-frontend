@@ -23,6 +23,7 @@ function MoviesList({ moviesCards }) {
       setMoreButtonQuantity(2);
     }
   }, [moviesCards]);
+
   useEffect(() => {
     setMoviesCardsView(moviesCards.filter((item, index) => index < cardsQuantity));
     setIsButtonVisible(true);
@@ -32,7 +33,13 @@ function MoviesList({ moviesCards }) {
     if (cardsQuantity >= moviesCards.length) {
       setIsButtonVisible(false);
     }
-  }, [cardsQuantity]);
+  }, [cardsQuantity, moviesCards]);
+
+  useEffect(() => {
+    if (moviesCards.length === 0) {
+      setIsButtonVisible(false);
+    }
+  }, [moviesCards]);
 
   useEffect(() => {
     setTimeout(() => {
