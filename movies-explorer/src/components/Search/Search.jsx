@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './Search.css';
 
-function Search({ findMovies, handleCheckbox }) {
+function Search({ findMovies, handleCheckbox, isChecked }) {
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
 
   function handleSetSearchQuery(e) {
@@ -12,6 +14,14 @@ function Search({ findMovies, handleCheckbox }) {
     findMovies(searchQuery);
   }
 
+  useEffect(() => {
+    if (!(localStorage.getItem('searchQuery') && location.pathname === '/movies')) {
+      return;
+    } else {
+      setSearchQuery(localStorage.getItem('searchQuery'));
+    }
+  }, []);
+
   return (
     <section className='search'>
       <form className='search__form' onSubmit={handleSubmit} noValidate>
@@ -20,7 +30,14 @@ function Search({ findMovies, handleCheckbox }) {
           <button className='search__button button' type='submit' />
         </div>
         <div className='search__thumbler-container'>
-          <input onInput={handleSubmit} onChange={handleCheckbox} className='search__thumbler' type='checkbox' id='search__thumbler' />
+          <input
+            onInput={handleSubmit}
+            onChange={handleCheckbox}
+            className='search__thumbler'
+            type='checkbox'
+            id='search__thumbler'
+            checked={isChecked}
+          />
           <label className='search__thumbler-label' htmlFor='search__thumbler'>
             Короткометражки
           </label>

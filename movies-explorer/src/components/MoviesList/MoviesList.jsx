@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import MovieCard from '../MovieCard/MovieCard';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './MoviesList.css';
 
-function MoviesList({ moviesCards }) {
+function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMoviesCards }) {
   const location = useLocation();
   const windowWidth = useWindowWidth();
+  const currentUser = useContext(CurrentUserContext);
   const [cardsQuantity, setCardsQuantity] = useState(0);
   const [moreQuantity, setMoreButtonQuantity] = useState(0);
   const [moviesCardsView, setMoviesCardsView] = useState([]);
@@ -57,19 +59,33 @@ function MoviesList({ moviesCards }) {
     setCardsQuantity(moreQuantity + cardsQuantity);
   }
 
+  function setIsSaved(savedMoviesCards, movie) {
+    return savedMoviesCards.find((savedMovie) => savedMovie.movieId === movie.id && savedMovie.owner === currentUser.id);
+  }
+
   return location.pathname === '/saved-movies' ? (
     <section className='saved-movies__section'>
       <ul className='saved-movies__list'>
-        {/* {moviesCardsView.map((movie) => {
-          return <MovieCard movie={movie} key={movie.id} />;
-        })} */}
+        {moviesCardsView.map((movie) => {
+          if (movie.owner === currentUser.id)
+            return <MovieCard movie={movie} key={movie._id} handleDeleteMovie={handleDeleteMovie} savedMoviesCards={savedMoviesCards} />;
+        })}
       </ul>
     </section>
   ) : (
     <section className='movies__section'>
       <ul className='movies__list'>
         {moviesCardsView.map((movie) => {
-          return <MovieCard movie={movie} key={movie.id} />;
+          return (
+            <MovieCard
+              movie={movie}
+              key={movie.id}
+              handleSaveMovie={handleSaveMovie}
+              handleDeleteMovie={handleDeleteMovie}
+              savedMoviesCards={savedMoviesCards}
+              isSaved={setIsSaved(savedMoviesCards, movie)}
+            />
+          );
         })}
       </ul>
       {isButtonVisible && (

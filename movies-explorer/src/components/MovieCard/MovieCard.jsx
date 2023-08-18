@@ -1,11 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './MovieCard.css';
 
-function MovieCard({ movie }) {
+function MovieCard({ movie, handleSaveMovie, handleDeleteMovie, savedMoviesCards, isSaved }) {
+  const location = useLocation();
   function convertTimeFromMins(mins) {
     const hours = Math.trunc(mins / 60);
     const minutes = mins % 60;
     return hours > 0 ? `${hours}ч ${minutes}м` : `${minutes}м`;
+  }
+
+  function onSaveClick() {
+    handleSaveMovie(movie);
+  }
+  function onDeleteClick() {
+    handleDeleteMovie(savedMoviesCards.filter((m) => m.movieId === movie.id)[0]);
+  }
+  function onSavedMoviesDeleteClick(e) {
+    handleDeleteMovie(movie);
+    e.target.closest('.movie-card').remove();
   }
   return (
     <>
@@ -15,9 +27,25 @@ function MovieCard({ movie }) {
           <p className='movie-card__duration'>{convertTimeFromMins(movie.duration)}</p>
         </div>
         <Link className='movie-card__trailer-link link' to={movie.trailerLink} target='_blank'>
-          <img className='movie-card__image' src={`https://api.nomoreparties.co/${movie.image.url}`} alt={movie.nameRU} />
+          <img
+            className='movie-card__image'
+            src={location.pathname === '/saved-movies' ? `${movie.image}` : `https://api.nomoreparties.co/${movie.image.url}`}
+            alt={movie.nameRU}
+          />
         </Link>
-        <button type='button' className='movie-card__save-button movie-card__save-button_type_active button'></button>
+        {location.pathname === '/saved-movies' ? (
+          <button
+            onClick={onSavedMoviesDeleteClick}
+            type='button'
+            className={`movie-card__save-button button movie-card__save-button_type_delete`}
+          ></button>
+        ) : (
+          <button
+            onClick={isSaved ? onDeleteClick : onSaveClick}
+            type='button'
+            className={`movie-card__save-button button ${isSaved ? 'movie-card__save-button_type_active' : 'movie-card__save-button_type_inactive'}`}
+          ></button>
+        )}
       </li>
     </>
   );

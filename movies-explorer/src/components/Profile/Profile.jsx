@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
-function Profile({ logOut, onUserUpdate, userData }) {
+function Profile({ logOut, onUserUpdate }) {
   const { values, handleChange, errors, setValues, isValid } = useFormAndValidation();
-  const userName = userData.name;
-  const userEmail = userData.email;
+  const currentUser = useContext(CurrentUserContext);
+  const userName = currentUser.name;
+  const userEmail = currentUser.email;
 
   useEffect(() => {
     setValues({

@@ -21,11 +21,6 @@ function App() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState('');
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    id: '',
-  });
   useEffect(() => {
     const token = localStorage.getItem('token');
     setToken(token);
@@ -39,8 +34,9 @@ function App() {
     mainApi
       .getCurrentUser()
       .then((data) => {
-        setUserData({ name: data.name, email: data.email, id: data._id });
+        setCurrentUser({ name: data.name, email: data.email, id: data._id });
         setIsLoggedIn(true);
+        downloadSavedMovies();
         // navigate('/movies');
       })
       .catch((err) => {
@@ -78,7 +74,7 @@ function App() {
     mainApi
       .patchUserData(name, email)
       .then((userData) => {
-        setUserData(userData);
+        setCurrentUser(userData);
       })
       .catch((err) => {
         console.log(err);
@@ -87,39 +83,139 @@ function App() {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('searchQuery');
+    localStorage.removeItem('isChecked');
     setToken('');
-    setUserData({
-      name: '',
-      email: '',
-      id: '',
-    });
+    setCurrentUser({});
     setIsLoggedIn(false);
+    setSavedMoviesCards([]);
+    setFilteredSavedMoviesCards([]);
+    setFilteredMoviesCards([]);
+    setIsChecked(false);
     navigate('/');
   };
 
-  // const [moviesCards, setMoviesCards] = useState([]);
+  ///////////////////////////////////// Movies /////////////////////////////////////
+  const [filteredMoviesCards, setFilteredMoviesCards] = useState([]);
+  const [userMessage, setUserMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  // // загружаем все фильмы с Beatfilms
-  // useEffect(() => {
-  //   moviesApi
-  //     .getMoviesCards()
-  //     .then((moviesCards) => {
-  //       setMoviesCards(moviesCards);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-  // function downloadMovies() {
-  //   moviesApi
-  //     .getMoviesCards()
-  //     .then((moviesCards) => {
-  //       setMoviesCards(moviesCards);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  function handleCheckbox() {
+    setIsChecked(!isChecked);
+    findMovies();
+  }
+
+  async function downloadMovies() {
+    setIsLoading(true);
+    try {
+      const movies = await moviesApi.getMoviesCards();
+      setIsLoading(false);
+      setIsError(false);
+      return movies;
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+      setIsError(true);
+      return [];
+    }
+  }
+  function filterMoviesByQuery(movies, searchQuery) {
+    const ruFilms = movies.filter((item) => item.nameRU.toLowerCase().includes(searchQuery.toLowerCase()));
+    const enFilms = movies.filter((item) => item.nameEN.toLowerCase().includes(searchQuery.toLowerCase()));
+    const newSet = new Set(ruFilms.concat(enFilms));
+    const filteredMoviesArray = Array.from(newSet);
+    return filteredMoviesArray;
+  }
+
+  function findMovies(movies, searchQuery) {
+    if (!searchQuery) {
+      setUserMessage('Нужно ввести ключевое слово');
+      return;
+    }
+    setUserMessage(false);
+    const filteredMovies = filterMoviesByQuery(movies, searchQuery);
+    isChecked ? setFilteredMoviesCards(sortShortMovies(filteredMovies)) : setFilteredMoviesCards(filteredMovies);
+  }
+
+  async function handleSearch(searchQuery) {
+    const movies = await downloadMovies();
+    findMovies(movies, searchQuery);
+    localStorage.setItem('searchQuery', searchQuery);
+    localStorage.setItem('isChecked', isChecked);
+  }
+
+  function sortShortMovies(movies) {
+    setFilteredMoviesCards(movies.filter((item) => item.duration <= 40));
+    return movies.filter((item) => item.duration <= 40);
+  }
+
+  useEffect(() => {
+    if (filteredMoviesCards.length === 0) {
+      isError
+        ? setUserMessage(
+            'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+          )
+        : setUserMessage('Ничего не найдено');
+    }
+  }, [filteredMoviesCards]);
+
+  useEffect(() => {
+    setUserMessage('Нужно ввести ключевое слово');
+  }, []);
+  ///////////////////////////////////// Movies /////////////////////////////////////
+
+  ///////////////////////////////////// Saved Movies /////////////////////////////////////
+  const [savedMoviesCards, setSavedMoviesCards] = useState([]);
+  const [filteredSavedMoviesCards, setFilteredSavedMoviesCards] = useState([]);
+
+  async function downloadSavedMovies() {
+    try {
+      const savedMovies = await mainApi.getSavedMovies();
+      setSavedMoviesCards(savedMovies);
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+  function handleSavedMoviesSearch(searchQuery) {
+    findSavedMovies(savedMoviesCards, searchQuery);
+  }
+  function findSavedMovies(savedMoviesCards, searchQuery) {
+    if (!searchQuery) {
+      setUserMessage(false);
+      setFilteredSavedMoviesCards(savedMoviesCards);
+    }
+    setUserMessage(false);
+    const filteredMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
+    isChecked ? setFilteredSavedMoviesCards(sortShortMovies(filteredMovies)) : setFilteredSavedMoviesCards(filteredMovies);
+  }
+
+  useEffect(() => {
+    if (filteredSavedMoviesCards.length === 0) setUserMessage('Ничего не найдено');
+  }, [filteredSavedMoviesCards]);
+  ///////////////////////////////////// Saved Movies /////////////////////////////////////
+
+  ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
+  function handleSaveMovie(movie) {
+    mainApi
+      .saveMovie(movie)
+      .then((newMovie) => {
+        setSavedMoviesCards([newMovie, ...savedMoviesCards]);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleDeleteMovie(movie) {
+    mainApi
+      .deleteMovie(movie._id)
+      .then(() => {
+        setSavedMoviesCards((state) => state.filter((item) => item._id !== movie._id));
+      })
+      .catch((err) => console.log(err));
+  }
+  ///////////////////////////////////// Handle Save Movie /////////////////////////////////////
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -140,7 +236,17 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <Movies />
+                <Movies
+                  handleSearch={handleSearch}
+                  handleCheckbox={handleCheckbox}
+                  isLoading={isLoading}
+                  userMessage={userMessage}
+                  moviesCards={filteredMoviesCards}
+                  isChecked={isChecked}
+                  handleSaveMovie={handleSaveMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  savedMoviesCards={savedMoviesCards}
+                />
                 <Footer />
               </ProtectedRouteElement>
             }
@@ -150,7 +256,14 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <SavedMovies />
+                <SavedMovies
+                  handleSearch={handleSavedMoviesSearch}
+                  handleCheckbox={handleCheckbox}
+                  userMessage={userMessage}
+                  moviesCards={filteredSavedMoviesCards}
+                  handleDeleteMovie={handleDeleteMovie}
+                  savedMoviesCards={savedMoviesCards}
+                />
                 <Footer />
               </ProtectedRouteElement>
             }
@@ -160,7 +273,7 @@ function App() {
             element={
               <ProtectedRouteElement isLoggedIn={isLoggedIn}>
                 <Header isLoggedIn={isLoggedIn} />
-                <Profile logOut={logOut} onUserUpdate={handleUpdateUser} userData={userData} />
+                <Profile logOut={logOut} onUserUpdate={handleUpdateUser} />
               </ProtectedRouteElement>
             }
           />

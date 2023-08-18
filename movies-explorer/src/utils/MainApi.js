@@ -50,6 +50,40 @@ class MainApi {
             }),
         }).then(this._getJson);
     }
+    getSavedMovies() {
+        return fetch(`${this._baseUrl}/movies`, {
+            headers: this._headers,
+        }).then(this._getJson);
+    }
+
+    saveMovie(movie) {
+        return fetch(`${this._baseUrl}/movies`, {
+            method: "POST",
+            headers: this._headers,
+            body: JSON.stringify({
+                movieId: movie.id,
+                country: movie.country,
+                director: movie.director,
+                duration: movie.duration,
+                year: movie.year,
+                description: movie.description,
+                image: 'https://api.nomoreparties.co' + movie.image.url,
+                trailerLink: movie.trailerLink,
+                nameRU: movie.nameRU,
+                nameEN: movie.nameEN,
+                thumbnail: 'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url,
+            }),
+        }).then(this._getJson);
+    }
+
+    deleteMovie(movieId) {
+        return fetch(`${this._baseUrl}/movies/${movieId}`, {
+            method: 'DELETE',
+            headers: this._headers,
+        })
+            .then(this._getJson);
+    };
+
 }
 
 const mainApi = new MainApi({
