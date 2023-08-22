@@ -4,7 +4,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Navigation from '../Navigation/Navigaton';
 import { useState } from 'react';
 
-function Header({ isLoggedIn }) {
+function Header() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

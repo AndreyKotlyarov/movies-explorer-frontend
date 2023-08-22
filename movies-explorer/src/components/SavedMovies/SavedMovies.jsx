@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 // import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
 function SavedMovies({ handleSearch, handleCheckbox, userMessage, moviesCards, handleDeleteMovie, savedMoviesCards }) {
-  useEffect(() => {
-    handleSearch('');
-  }, []);
+  // useEffect(() => {
+  //   handleSearch('');
+  // }, []);
   return (
     <main className='saved-movies'>
       <Search findMovies={handleSearch} handleCheckbox={handleCheckbox} />

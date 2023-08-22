@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
@@ -21,6 +21,8 @@ function App() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState('');
+  const location = useLocation();
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     setToken(token);
@@ -36,13 +38,14 @@ function App() {
       .then((data) => {
         setCurrentUser({ name: data.name, email: data.email, id: data._id });
         setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', isLoggedIn);
         downloadSavedMovies();
         // navigate('/movies');
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [token]);
+  }, [token, isLoggedIn]);
 
   const registerUser = (email, password, name) => {
     mainApi
@@ -50,8 +53,8 @@ function App() {
       .then((res) => {
         localStorage.setItem('token', res.token);
         setToken(res.token);
-        navigate('/signin');
       })
+      .then(() => loginUser(email, password))
       .catch((err) => {
         console.log(err);
       });
@@ -85,13 +88,17 @@ function App() {
     localStorage.removeItem('token');
     localStorage.removeItem('searchQuery');
     localStorage.removeItem('isChecked');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('filteredMoviesCards');
+    localStorage.removeItem('downloadedMovies');
+    localStorage.removeItem('foundMovies');
+
     setToken('');
     setCurrentUser({});
     setIsLoggedIn(false);
     setSavedMoviesCards([]);
     setFilteredSavedMoviesCards([]);
     setFilteredMoviesCards([]);
-    setIsChecked(false);
     navigate('/');
   };
 
@@ -102,15 +109,11 @@ function App() {
   const [isChecked, setIsChecked] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  function handleCheckbox() {
-    setIsChecked(!isChecked);
-    findMovies();
-  }
-
   async function downloadMovies() {
     setIsLoading(true);
     try {
       const movies = await moviesApi.getMoviesCards();
+      localStorage.setItem('downloadedMovies', JSON.stringify(movies));
       setIsLoading(false);
       setIsError(false);
       return movies;
@@ -121,6 +124,7 @@ function App() {
       return [];
     }
   }
+
   function filterMoviesByQuery(movies, searchQuery) {
     const ruFilms = movies.filter((item) => item.nameRU.toLowerCase().includes(searchQuery.toLowerCase()));
     const enFilms = movies.filter((item) => item.nameEN.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -129,41 +133,80 @@ function App() {
     return filteredMoviesArray;
   }
 
+  function sortShortMovies(movies, isChecked) {
+    if (isChecked) {
+      return movies.filter((item) => item.duration <= 40);
+    } else {
+      return movies;
+    }
+  }
+
   function findMovies(movies, searchQuery) {
     if (!searchQuery) {
       setUserMessage('Нужно ввести ключевое слово');
       return;
+    } else {
+      setUserMessage(false);
+      const filteredByQueryMovies = filterMoviesByQuery(movies, searchQuery);
+      if (isChecked) {
+        const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
+        setFilteredMoviesCards(sortedShortMovies);
+        return sortedShortMovies;
+      } else {
+        setFilteredMoviesCards(filteredByQueryMovies);
+        return filteredByQueryMovies;
+      }
     }
-    setUserMessage(false);
-    const filteredMovies = filterMoviesByQuery(movies, searchQuery);
-    isChecked ? setFilteredMoviesCards(sortShortMovies(filteredMovies)) : setFilteredMoviesCards(filteredMovies);
+  }
+
+  function handleCheckbox() {
+    setIsChecked(!isChecked);
+    findMovies();
   }
 
   async function handleSearch(searchQuery) {
-    const movies = await downloadMovies();
-    findMovies(movies, searchQuery);
-    localStorage.setItem('searchQuery', searchQuery);
-    localStorage.setItem('isChecked', isChecked);
-  }
+    if (!JSON.parse(localStorage.getItem('downloadedMovies'))) {
+      const movies = await downloadMovies();
+      localStorage.setItem('isChecked', isChecked);
 
-  function sortShortMovies(movies) {
-    setFilteredMoviesCards(movies.filter((item) => item.duration <= 40));
-    return movies.filter((item) => item.duration <= 40);
+      localStorage.setItem('searchQuery', searchQuery);
+      return findMovies(movies, searchQuery);
+    } else {
+      const movies = JSON.parse(localStorage.getItem('downloadedMovies'));
+      const foundMovies = findMovies(movies, searchQuery);
+      localStorage.setItem('isChecked', isChecked);
+
+      localStorage.setItem('searchQuery', searchQuery);
+      localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+
+      return foundMovies;
+    }
+
+    // localStorage.setItem('filteredMoviesCards', JSON.stringify(filteredMoviesCards));
+    // } else {
   }
 
   useEffect(() => {
     if (filteredMoviesCards.length === 0) {
-      isError
-        ? setUserMessage(
-            'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-          )
-        : setUserMessage('Ничего не найдено');
+      if (isError) {
+        setUserMessage(
+          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+        );
+      } else {
+        setUserMessage('Ничего не найдено');
+        // setFilteredMoviesCards([]);
+      }
     }
   }, [filteredMoviesCards]);
 
   useEffect(() => {
-    setUserMessage('Нужно ввести ключевое слово');
-  }, []);
+    if (!(localStorage.getItem('isChecked') && location.pathname === '/movies')) {
+      return;
+    } else {
+      setIsChecked(JSON.parse(localStorage.getItem('isChecked')));
+    }
+  }, [location.pathname]);
+
   ///////////////////////////////////// Movies /////////////////////////////////////
 
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
@@ -192,9 +235,9 @@ function App() {
     isChecked ? setFilteredSavedMoviesCards(sortShortMovies(filteredMovies)) : setFilteredSavedMoviesCards(filteredMovies);
   }
 
-  useEffect(() => {
-    if (filteredSavedMoviesCards.length === 0) setUserMessage('Ничего не найдено');
-  }, [filteredSavedMoviesCards]);
+  // useEffect(() => {
+  //   if (filteredSavedMoviesCards.length === 0) setUserMessage('Ничего не найдено');
+  // }, [filteredSavedMoviesCards]);
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
 
   ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
@@ -215,7 +258,11 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
+
   ///////////////////////////////////// Handle Save Movie /////////////////////////////////////
+  useEffect(() => {
+    setUserMessage('Нужно ввести ключевое слово');
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -225,7 +272,7 @@ function App() {
             path='/'
             element={
               <>
-                <Header isLoggedIn={isLoggedIn} />
+                <Header />
                 <Main />
                 <Footer />
               </>
@@ -234,8 +281,8 @@ function App() {
           <Route
             path='/movies'
             element={
-              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
-                <Header isLoggedIn={isLoggedIn} />
+              <ProtectedRouteElement>
+                <Header />
                 <Movies
                   handleSearch={handleSearch}
                   handleCheckbox={handleCheckbox}
@@ -254,8 +301,8 @@ function App() {
           <Route
             path='/saved-movies'
             element={
-              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
-                <Header isLoggedIn={isLoggedIn} />
+              <ProtectedRouteElement>
+                <Header />
                 <SavedMovies
                   handleSearch={handleSavedMoviesSearch}
                   handleCheckbox={handleCheckbox}
@@ -271,8 +318,8 @@ function App() {
           <Route
             path='/profile'
             element={
-              <ProtectedRouteElement isLoggedIn={isLoggedIn}>
-                <Header isLoggedIn={isLoggedIn} />
+              <ProtectedRouteElement>
+                <Header />
                 <Profile logOut={logOut} onUserUpdate={handleUpdateUser} />
               </ProtectedRouteElement>
             }

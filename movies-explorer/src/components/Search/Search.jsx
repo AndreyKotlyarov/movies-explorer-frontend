@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
 
-function Search({ findMovies, handleCheckbox, isChecked }) {
+function Search({ handleSearch, handleCheckbox, isChecked }) {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -11,7 +11,7 @@ function Search({ findMovies, handleCheckbox, isChecked }) {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    findMovies(searchQuery);
+    handleSearch(searchQuery);
   }
 
   useEffect(() => {
