@@ -18,7 +18,8 @@ function Movies({
 }) {
   const [moviesToRender, setMoviesToRender] = useState([]);
   useEffect(() => {
-    if (!(localStorage.getItem('searchQuery') || localStorage.getItem('isChecked'))) {
+    if (!localStorage.getItem('foundMovies')) {
+      setMoviesToRender(moviesCards);
       return;
     } else {
       setMoviesToRender(JSON.parse(localStorage.getItem('foundMovies')));

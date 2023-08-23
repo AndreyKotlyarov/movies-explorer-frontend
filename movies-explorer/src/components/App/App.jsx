@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
@@ -15,6 +15,7 @@ import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
+import { SHORT_MOVIE_DURATION } from '../../utils/consts';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -39,8 +40,6 @@ function App() {
         setCurrentUser({ name: data.name, email: data.email, id: data._id });
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', isLoggedIn);
-        downloadSavedMovies();
-        // navigate('/movies');
       })
       .catch((err) => {
         console.log(err);
@@ -66,7 +65,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('token', res.token);
         setToken(res.token);
-        navigate('/movies');
+        <Navigate to='/movies' />;
       })
       .catch((err) => {
         console.log(err);
@@ -96,6 +95,7 @@ function App() {
     setToken('');
     setCurrentUser({});
     setIsLoggedIn(false);
+    setIsChecked(false);
     setSavedMoviesCards([]);
     setFilteredSavedMoviesCards([]);
     setFilteredMoviesCards([]);
@@ -135,7 +135,7 @@ function App() {
 
   function sortShortMovies(movies, isChecked) {
     if (isChecked) {
-      return movies.filter((item) => item.duration <= 40);
+      return movies.filter((item) => item.duration <= SHORT_MOVIE_DURATION);
     } else {
       return movies;
     }
@@ -181,9 +181,6 @@ function App() {
 
       return foundMovies;
     }
-
-    // localStorage.setItem('filteredMoviesCards', JSON.stringify(filteredMoviesCards));
-    // } else {
   }
 
   useEffect(() => {
@@ -215,24 +212,36 @@ function App() {
 
   async function downloadSavedMovies() {
     try {
+      setIsLoading(true);
       const savedMovies = await mainApi.getSavedMovies();
       setSavedMoviesCards(savedMovies);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       return [];
     }
   }
-  function handleSavedMoviesSearch(searchQuery) {
-    findSavedMovies(savedMoviesCards, searchQuery);
-  }
-  function findSavedMovies(savedMoviesCards, searchQuery) {
+  async function findSavedMovies(searchQuery) {
+    await downloadSavedMovies();
     if (!searchQuery) {
       setUserMessage(false);
       setFilteredSavedMoviesCards(savedMoviesCards);
     }
     setUserMessage(false);
-    const filteredMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
-    isChecked ? setFilteredSavedMoviesCards(sortShortMovies(filteredMovies)) : setFilteredSavedMoviesCards(filteredMovies);
+    const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
+    if (isChecked) {
+      const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
+      setFilteredSavedMoviesCards(sortedShortMovies);
+      return sortedShortMovies;
+    } else {
+      setFilteredSavedMoviesCards(filteredByQueryMovies);
+      return filteredByQueryMovies;
+    }
+  }
+
+  function handleSavedMoviesSearch(searchQuery) {
+    findSavedMovies(searchQuery);
   }
 
   // useEffect(() => {
@@ -260,9 +269,9 @@ function App() {
   }
 
   ///////////////////////////////////// Handle Save Movie /////////////////////////////////////
-  useEffect(() => {
-    setUserMessage('Нужно ввести ключевое слово');
-  }, []);
+  // useEffect(() => {
+  //   setUserMessage('Нужно ввести ключевое слово');
+  // }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -304,6 +313,7 @@ function App() {
               <ProtectedRouteElement>
                 <Header />
                 <SavedMovies
+                  isLoading={isLoading}
                   handleSearch={handleSavedMoviesSearch}
                   handleCheckbox={handleCheckbox}
                   userMessage={userMessage}
@@ -324,8 +334,8 @@ function App() {
               </ProtectedRouteElement>
             }
           />
-          <Route path='/signup' element={<Register registerUser={registerUser} />} />
-          <Route path='/signin' element={<Login loginUser={loginUser} />} />
+          <Route path='/signup' element={isLoggedIn ? <Navigate to='/movies' /> : <Register registerUser={registerUser} />} />
+          <Route path='/signin' element={isLoggedIn ? <Navigate to='/movies' /> : <Login loginUser={loginUser} />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </div>

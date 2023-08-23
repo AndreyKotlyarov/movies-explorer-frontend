@@ -11,9 +11,11 @@
 .movie-card__info {
     margin: 14px 0;
     min-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 20%;
+    column-gap: 10px;
+    /* align-items: center;
+    justify-content: space-between; */
     padding: 0 14px;
     box-sizing: border-box;
 }
@@ -36,6 +38,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
+    text-align: right;
 }
 
 .movie-card__trailer-link {
