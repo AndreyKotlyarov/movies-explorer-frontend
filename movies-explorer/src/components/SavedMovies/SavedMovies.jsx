@@ -11,6 +11,9 @@ function SavedMovies({ handleSearch, handleCheckbox, userMessage, moviesCards, h
   useEffect(() => {
     setMoviesToRender(moviesCards);
   }, [moviesCards]);
+  useEffect(() => {
+    if (!moviesCards) setMoviesToRender(savedMoviesCards);
+  }, []);
   return (
     <main className='saved-movies'>
       <Search handleSearch={handleSearch} handleCheckbox={handleCheckbox} />

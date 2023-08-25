@@ -17,7 +17,7 @@ function Login({ loginUser }) {
         </Link>
         <h1 className='login__title'>Рады видеть!</h1>
       </section>
-      <form className='login__form' onSubmit={handleSubmit}>
+      <form className='login__form' onSubmit={handleSubmit} noValidate>
         <ul className='login__content'>
           <li className='login__input-container'>
             <label className='login__input-label' htmlFor='email__input'>
@@ -32,8 +32,11 @@ function Login({ loginUser }) {
                 type='email'
                 id='email__input'
                 placeholder='Электронная почта'
+                pattern='^[a-z1-9]+@+[a-z1-9]+[.]+[a-z]+$'
+                required
               />
             </div>
+            <span className='login__error-message login__error-message_active'>{errors.email || ''}</span>
           </li>
           <li className='login__input-container'>
             <label className='login__input-label' htmlFor='password__input'>
@@ -45,14 +48,15 @@ function Login({ loginUser }) {
                 value={values.password || ''}
                 onChange={handleChange}
                 className='login__input input'
-                type='text'
+                type='password'
                 minLength='8'
                 maxLength='30'
                 id='password__input'
                 placeholder='Пароль'
+                required
               />
             </div>
-            <span className='login__error-message login__error-message_active'>{errors.email || errors.password || ''}</span>
+            <span className='login__error-message login__error-message_active'>{errors.password || ''}</span>
           </li>
         </ul>
         <button className={`login__button button ${isValid ? '' : 'button_type_disabled'}`} type='submit' disabled={!isValid}>

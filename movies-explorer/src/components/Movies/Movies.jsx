@@ -1,52 +1,60 @@
-// import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import MoviesList from '../MoviesList/MoviesList';
 import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
-import { useEffect, useState } from 'react';
 import './Movies.css';
 
 function Movies({
   handleSearch,
   handleCheckbox,
   isLoading,
-  userMessage,
   moviesCards,
   isChecked,
   handleSaveMovie,
   handleDeleteMovie,
   savedMoviesCards,
+  isDownloadError,
+  isMoviesNotFound,
 }) {
-  const [moviesToRender, setMoviesToRender] = useState([]);
+  const [foundMovies, setFoundMovies] = useState([]);
   useEffect(() => {
     if (!localStorage.getItem('foundMovies')) {
-      setMoviesToRender(moviesCards);
       return;
     } else {
-      setMoviesToRender(JSON.parse(localStorage.getItem('foundMovies')));
+      setFoundMovies(JSON.parse(localStorage.getItem('foundMovies')));
     }
   }, [moviesCards]);
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem('filteredMoviesCards')) {
-  //     return;
-  //   } else {
-  //     moviesCards = JSON.parse(localStorage.getItem('filteredMoviesCards'));
-  //     console.log(moviesCards);
-  //   }
-  // }, []);
+  function getFoundMovies() {
+    if (!foundMovies) {
+      return moviesCards;
+    } else {
+      return foundMovies;
+    }
+  }
 
   return (
     <main className='movies'>
       <Search handleSearch={handleSearch} handleCheckbox={handleCheckbox} isChecked={isChecked} />
-      {userMessage && <span className='movies__user-message'>{userMessage}</span>}
+      {/* {(isDownloadError || isMoviesNotFound) && ( */}
+      <p className='movies__user-message'>
+        {isDownloadError
+          ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+          : isMoviesNotFound
+          ? 'Ничего не найдено'
+          : moviesCards.length === 0 && !JSON.parse(localStorage.getItem('downloadedMovies'))
+          ? 'Нужно ввести ключевое слово'
+          : ''}
+      </p>
+      {/* )} */}
       {isLoading && <Preloader />}
-
       <MoviesList
-        moviesCards={moviesToRender}
+        moviesCards={getFoundMovies()}
         handleSaveMovie={handleSaveMovie}
         handleDeleteMovie={handleDeleteMovie}
         savedMoviesCards={savedMoviesCards}
       />
+      {/* )} */}
     </main>
   );
 }

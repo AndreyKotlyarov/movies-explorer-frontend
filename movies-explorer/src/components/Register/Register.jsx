@@ -33,8 +33,10 @@ function Register({ registerUser }) {
                 maxLength='30'
                 id='name__input'
                 placeholder='Ваше имя'
+                required
               />
             </div>
+            <span className='register__error-message register__error-message_active'>{errors.name}</span>
           </li>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='email__input'>
@@ -49,8 +51,11 @@ function Register({ registerUser }) {
                 type='email'
                 id='email__input'
                 placeholder='Ваша электронная почта'
+                pattern='^[a-z1-9]+@+[a-z1-9]+[.]+[a-z]+$'
+                required
               />
             </div>
+            <span className='register__error-message register__error-message_active'>{errors.email}</span>
           </li>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='password__input'>
@@ -62,14 +67,15 @@ function Register({ registerUser }) {
                 onChange={handleChange}
                 name='password'
                 className='register__input input'
-                type='text'
+                type='password'
                 minLength='8'
                 maxLength='30'
                 id='password__input'
                 placeholder='Пароль'
+                required
               />
             </div>
-            <span className='register__error-message register__error-message_active'>{errors.name || errors.email || errors.password}</span>
+            <span className='register__error-message register__error-message_active'>{errors.password}</span>
           </li>
         </ul>
         <button className={`register__button button ${isValid ? '' : 'button_type_disabled'}`} type='submit' disabled={!isValid}>

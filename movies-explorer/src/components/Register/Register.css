@@ -37,7 +37,7 @@
 .register__input-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 0;
 }
 
 .register__input-container:last-of-type {
@@ -81,7 +81,7 @@
     font-weight: 400;
     line-height: normal;
     padding: 0;
-    margin-top: 10px;
+    margin-top: 6px;
     visibility: hidden;
 
 }

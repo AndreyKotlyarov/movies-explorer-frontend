@@ -40,6 +40,7 @@ function App() {
         setCurrentUser({ name: data.name, email: data.email, id: data._id });
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', isLoggedIn);
+        downloadSavedMovies();
       })
       .catch((err) => {
         console.log(err);
@@ -71,15 +72,18 @@ function App() {
         console.log(err);
       });
   };
+  const [isSuccess, setIsSuccess] = useState(null);
 
   function handleUpdateUser(name, email) {
     mainApi
       .patchUserData(name, email)
       .then((userData) => {
         setCurrentUser(userData);
+        setIsSuccess(true);
       })
       .catch((err) => {
         console.log(err);
+        setIsSuccess(false);
       });
   }
 
@@ -104,10 +108,18 @@ function App() {
 
   ///////////////////////////////////// Movies /////////////////////////////////////
   const [filteredMoviesCards, setFilteredMoviesCards] = useState([]);
-  const [userMessage, setUserMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isDownloadError, setIsDownloadError] = useState(false);
+  const [isMoviesNotFound, setIsMoviesNotFound] = useState(false);
+
+  useEffect(() => {
+    if (!(localStorage.getItem('isChecked') && location.pathname === '/movies')) {
+      return;
+    } else {
+      setIsChecked(JSON.parse(localStorage.getItem('isChecked')));
+    }
+  }, [location.pathname]);
 
   async function downloadMovies() {
     setIsLoading(true);
@@ -115,12 +127,12 @@ function App() {
       const movies = await moviesApi.getMoviesCards();
       localStorage.setItem('downloadedMovies', JSON.stringify(movies));
       setIsLoading(false);
-      setIsError(false);
+      setIsDownloadError(false);
       return movies;
     } catch (err) {
       console.log(err);
       setIsLoading(false);
-      setIsError(true);
+      setIsDownloadError(true);
       return [];
     }
   }
@@ -143,17 +155,24 @@ function App() {
 
   function findMovies(movies, searchQuery) {
     if (!searchQuery) {
-      setUserMessage('Нужно ввести ключевое слово');
+      // setUserMessage('Нужно ввести ключевое слово');
       return;
     } else {
-      setUserMessage(false);
+      // setUserMessage(false);
       const filteredByQueryMovies = filterMoviesByQuery(movies, searchQuery);
       if (isChecked) {
         const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
         setFilteredMoviesCards(sortedShortMovies);
+
+        if (sortedShortMovies.length === 0) {
+          setIsMoviesNotFound(true);
+        } else setIsMoviesNotFound(false);
         return sortedShortMovies;
       } else {
         setFilteredMoviesCards(filteredByQueryMovies);
+        if (filteredByQueryMovies.length === 0) {
+          setIsMoviesNotFound(true);
+        } else setIsMoviesNotFound(false);
         return filteredByQueryMovies;
       }
     }
@@ -182,28 +201,6 @@ function App() {
       return foundMovies;
     }
   }
-
-  useEffect(() => {
-    if (filteredMoviesCards.length === 0) {
-      if (isError) {
-        setUserMessage(
-          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-        );
-      } else {
-        setUserMessage('Ничего не найдено');
-        // setFilteredMoviesCards([]);
-      }
-    }
-  }, [filteredMoviesCards]);
-
-  useEffect(() => {
-    if (!(localStorage.getItem('isChecked') && location.pathname === '/movies')) {
-      return;
-    } else {
-      setIsChecked(JSON.parse(localStorage.getItem('isChecked')));
-    }
-  }, [location.pathname]);
-
   ///////////////////////////////////// Movies /////////////////////////////////////
 
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
@@ -211,42 +208,50 @@ function App() {
   const [filteredSavedMoviesCards, setFilteredSavedMoviesCards] = useState([]);
 
   async function downloadSavedMovies() {
-    try {
-      setIsLoading(true);
-      const savedMovies = await mainApi.getSavedMovies();
-      setSavedMoviesCards(savedMovies);
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-      return [];
-    }
+    // try {
+    //   setIsLoading(true);
+    //   const savedMovies = await mainApi.getSavedMovies();
+    //   setSavedMoviesCards(savedMovies);
+    //   setIsLoading(false);
+    // } catch (err) {
+    //   console.log(err);
+    //   setIsLoading(false);
+    //   return [];
+    // }
   }
   async function findSavedMovies(searchQuery) {
-    await downloadSavedMovies();
-    if (!searchQuery) {
-      setUserMessage(false);
-      setFilteredSavedMoviesCards(savedMoviesCards);
-    }
-    setUserMessage(false);
-    const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
-    if (isChecked) {
-      const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
-      setFilteredSavedMoviesCards(sortedShortMovies);
-      return sortedShortMovies;
-    } else {
-      setFilteredSavedMoviesCards(filteredByQueryMovies);
-      return filteredByQueryMovies;
-    }
+    // if (savedMoviesCards.length === 0) {
+    //   await downloadSavedMovies();
+    // }
+    // if (!searchQuery) {
+    //   // setUserMessage(false);
+    //   setFilteredSavedMoviesCards(savedMoviesCards);
+    //   return;
+    // }
+    // // setUserMessage(false);
+    // const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
+    // if (isChecked) {
+    //   const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
+    //   setFilteredSavedMoviesCards(sortedShortMovies);
+    // } else {
+    //   setFilteredSavedMoviesCards(filteredByQueryMovies);
+    // }
   }
 
-  function handleSavedMoviesSearch(searchQuery) {
-    findSavedMovies(searchQuery);
+  async function handleSavedMoviesSearch(searchQuery) {
+    await findSavedMovies(searchQuery);
   }
+  function handleSavedMoviesCheckbox() {
+    setIsChecked(!isChecked);
+    findSavedMovies();
+  }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+    handleSavedMoviesSearch();
+  }, []);
 
-  // useEffect(() => {
-  //   if (filteredSavedMoviesCards.length === 0) setUserMessage('Ничего не найдено');
-  // }, [filteredSavedMoviesCards]);
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
 
   ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
@@ -269,9 +274,6 @@ function App() {
   }
 
   ///////////////////////////////////// Handle Save Movie /////////////////////////////////////
-  // useEffect(() => {
-  //   setUserMessage('Нужно ввести ключевое слово');
-  // }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -296,7 +298,9 @@ function App() {
                   handleSearch={handleSearch}
                   handleCheckbox={handleCheckbox}
                   isLoading={isLoading}
-                  userMessage={userMessage}
+                  isDownloadError={isDownloadError}
+                  isMoviesNotFound={isMoviesNotFound}
+                  // userMessage={userMessage}
                   moviesCards={filteredMoviesCards}
                   isChecked={isChecked}
                   handleSaveMovie={handleSaveMovie}
@@ -315,8 +319,8 @@ function App() {
                 <SavedMovies
                   isLoading={isLoading}
                   handleSearch={handleSavedMoviesSearch}
-                  handleCheckbox={handleCheckbox}
-                  userMessage={userMessage}
+                  handleCheckbox={handleSavedMoviesCheckbox}
+                  // userMessage={userMessage}
                   moviesCards={filteredSavedMoviesCards}
                   handleDeleteMovie={handleDeleteMovie}
                   savedMoviesCards={savedMoviesCards}
@@ -330,7 +334,7 @@ function App() {
             element={
               <ProtectedRouteElement>
                 <Header />
-                <Profile logOut={logOut} onUserUpdate={handleUpdateUser} />
+                <Profile logOut={logOut} onUserUpdate={handleUpdateUser} isSuccess={isSuccess} />
               </ProtectedRouteElement>
             }
           />

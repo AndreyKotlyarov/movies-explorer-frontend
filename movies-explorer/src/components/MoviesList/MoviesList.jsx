@@ -35,6 +35,12 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
     }
   }, []);
 
+  // useEffect(() => {
+  //   const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
+  //   setMoviesCardsView(foundMovies.filter((item, index) => index < cardsQuantity));
+  //   setIsButtonVisible(true);
+  // }, []);
+
   useEffect(() => {
     setMoviesCardsView(moviesCards.filter((item, index) => index < cardsQuantity));
     setIsButtonVisible(true);
