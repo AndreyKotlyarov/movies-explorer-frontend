@@ -3,25 +3,25 @@ import Search from '../Search/Search';
 import { useState, useEffect } from 'react';
 import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
-function SavedMovies({ handleSearch, handleCheckbox, userMessage, moviesCards, handleDeleteMovie, savedMoviesCards, isLoading }) {
-  const [moviesToRender, setMoviesToRender] = useState([]);
-  // useEffect(() => {
-  //   handleSearch('');
-  // }, []);
+function SavedMovies({ handleSearch, handleCheckbox, moviesCards, handleDeleteMovie, savedMoviesCards, isLoading, isDownloadError }) {
   useEffect(() => {
-    setMoviesToRender(moviesCards);
-  }, [moviesCards]);
-  useEffect(() => {
-    if (!moviesCards) setMoviesToRender(savedMoviesCards);
+    handleSearch('');
   }, []);
+
   return (
     <main className='saved-movies'>
       <Search handleSearch={handleSearch} handleCheckbox={handleCheckbox} />
-      {/* {isLoading && <Preloader />} */}
-      {userMessage && <span className='movies__user-message'>{userMessage}</span>}
+      <p className='saved-movies__user-message'>
+        {isDownloadError
+          ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+          : moviesCards.length === 0
+          ? 'Ничего не найдено'
+          : ''}
+      </p>
+
       {isLoading && <Preloader />}
 
-      <MoviesList moviesCards={moviesToRender} handleDeleteMovie={handleDeleteMovie} savedMoviesCards={savedMoviesCards} />
+      <MoviesList moviesCards={moviesCards} handleDeleteMovie={handleDeleteMovie} savedMoviesCards={savedMoviesCards} />
     </main>
   );
 }

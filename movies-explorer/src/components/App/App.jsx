@@ -155,10 +155,8 @@ function App() {
 
   function findMovies(movies, searchQuery) {
     if (!searchQuery) {
-      // setUserMessage('Нужно ввести ключевое слово');
       return;
     } else {
-      // setUserMessage(false);
       const filteredByQueryMovies = filterMoviesByQuery(movies, searchQuery);
       if (isChecked) {
         const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
@@ -208,49 +206,53 @@ function App() {
   const [filteredSavedMoviesCards, setFilteredSavedMoviesCards] = useState([]);
 
   async function downloadSavedMovies() {
-    // try {
-    //   setIsLoading(true);
-    //   const savedMovies = await mainApi.getSavedMovies();
-    //   setSavedMoviesCards(savedMovies);
-    //   setIsLoading(false);
-    // } catch (err) {
-    //   console.log(err);
-    //   setIsLoading(false);
-    //   return [];
-    // }
+    try {
+      setIsLoading(true);
+      const savedMovies = await mainApi.getSavedMovies();
+      setSavedMoviesCards(savedMovies);
+      setIsLoading(false);
+      setIsDownloadError(false);
+      localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+      setIsDownloadError(true);
+      return [];
+    }
   }
   async function findSavedMovies(searchQuery) {
-    // if (savedMoviesCards.length === 0) {
-    //   await downloadSavedMovies();
-    // }
-    // if (!searchQuery) {
-    //   // setUserMessage(false);
-    //   setFilteredSavedMoviesCards(savedMoviesCards);
-    //   return;
-    // }
-    // // setUserMessage(false);
-    // const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
-    // if (isChecked) {
-    //   const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
-    //   setFilteredSavedMoviesCards(sortedShortMovies);
-    // } else {
-    //   setFilteredSavedMoviesCards(filteredByQueryMovies);
-    // }
+    if (!searchQuery && isChecked) {
+      setFilteredSavedMoviesCards(JSON.parse(localStorage.getItem('savedMovies')));
+      const sortedShortMovies = sortShortMovies(filteredSavedMoviesCards, isChecked);
+      setFilteredSavedMoviesCards(sortedShortMovies);
+      return sortedShortMovies;
+    } else if (!searchQuery) {
+      setFilteredSavedMoviesCards(JSON.parse(localStorage.getItem('savedMovies')));
+      return JSON.parse(localStorage.getItem('savedMovies'));
+    } else {
+      const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
+      if (isChecked) {
+        const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
+        setFilteredSavedMoviesCards(sortedShortMovies);
+        return sortedShortMovies;
+      } else {
+        setFilteredSavedMoviesCards(filteredByQueryMovies);
+        return filteredByQueryMovies;
+      }
+    }
   }
 
   async function handleSavedMoviesSearch(searchQuery) {
-    await findSavedMovies(searchQuery);
+    if (!token) {
+      mainApi.setToken(localStorage.getItem('token'));
+    }
+    await downloadSavedMovies();
+    findSavedMovies(searchQuery);
   }
   function handleSavedMoviesCheckbox() {
     setIsChecked(!isChecked);
     findSavedMovies();
   }
-  useEffect(() => {
-    if (!isLoggedIn) {
-      return;
-    }
-    handleSavedMoviesSearch();
-  }, []);
 
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
 
@@ -273,7 +275,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  ///////////////////////////////////// Handle Save Movie /////////////////////////////////////
+  ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -300,7 +302,6 @@ function App() {
                   isLoading={isLoading}
                   isDownloadError={isDownloadError}
                   isMoviesNotFound={isMoviesNotFound}
-                  // userMessage={userMessage}
                   moviesCards={filteredMoviesCards}
                   isChecked={isChecked}
                   handleSaveMovie={handleSaveMovie}
@@ -320,7 +321,8 @@ function App() {
                   isLoading={isLoading}
                   handleSearch={handleSavedMoviesSearch}
                   handleCheckbox={handleSavedMoviesCheckbox}
-                  // userMessage={userMessage}
+                  isDownloadError={isDownloadError}
+                  isMoviesNotFound={isMoviesNotFound}
                   moviesCards={filteredSavedMoviesCards}
                   handleDeleteMovie={handleDeleteMovie}
                   savedMoviesCards={savedMoviesCards}
@@ -348,9 +350,3 @@ function App() {
 }
 
 export default App;
-
-// по роуту / отображается страница «О проекте»;
-// по роуту /movies отображается страница «Фильмы»;
-// по роуту /saved-movies отображается страница «Сохранённые фильмы»;
-// по роуту /profile отображается страница с профилем пользователя;
-// по роутам /signin и /signup отображаются страницы авторизации и регистрации.

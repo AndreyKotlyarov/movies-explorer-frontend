@@ -35,12 +35,6 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
     }
   }, []);
 
-  // useEffect(() => {
-  //   const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
-  //   setMoviesCardsView(foundMovies.filter((item, index) => index < cardsQuantity));
-  //   setIsButtonVisible(true);
-  // }, []);
-
   useEffect(() => {
     setMoviesCardsView(moviesCards.filter((item, index) => index < cardsQuantity));
     setIsButtonVisible(true);
@@ -61,13 +55,13 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
   useEffect(() => {
     setTimeout(() => {
       if (windowWidth > 1024) {
-        setCardsQuantity(DESKTOP_CARDS_QUANTITY);
+        // setCardsQuantity(DESKTOP_CARDS_QUANTITY);
         setMoreButtonQuantity(DESKTOP_MORE_QUANTITY);
       } else if (windowWidth <= 1007 && windowWidth > 635) {
-        setCardsQuantity(TABLET_CARDS_QUANTITY);
+        // setCardsQuantity(TABLET_CARDS_QUANTITY);
         setMoreButtonQuantity(TABLET_MORE_QUANTITY);
       } else if (windowWidth <= 635) {
-        setCardsQuantity(MOBILE_CARDS_QUANTITY);
+        // setCardsQuantity(MOBILE_CARDS_QUANTITY);
         setMoreButtonQuantity(MOBILE_MORE_QUANTITY);
       }
     }, 1200);
