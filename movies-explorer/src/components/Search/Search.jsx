@@ -1,33 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
-function Search({ handleSearch, handleCheckbox, isChecked }) {
+function Search({ handleSearch, handleCheckbox, isChecked, setIsChecked, setSavedMoviesChecked }) {
   const location = useLocation();
-  const [searchQuery, setSearchQuery] = useState('');
+  const { values, handleChange, errors, setValues, isValid, setIsValid } = useFormAndValidation();
 
-  function handleSetSearchQuery(e) {
-    setSearchQuery(e.target.value);
-  }
-  function handleSubmit(e) {
-    e.preventDefault();
-    handleSearch(searchQuery);
-  }
+  // const [searchQuery, setSearchQuery] = useState('');
 
+  // function handleSetSearchQuery(e) {
+  //   setSearchQuery(e.target.value);
+  // }
+  useEffect(() => {
+    if (location.pathname === '/saved-movies') {
+      setValues({ searchQuery: '' });
+      setIsChecked(false);
+      setSavedMoviesChecked(false);
+    }
+  }, [location.pathname]);
   useEffect(() => {
     if (!(localStorage.getItem('searchQuery') && location.pathname === '/movies')) {
       return;
     } else {
-      setSearchQuery(localStorage.getItem('searchQuery'));
+      setValues({ searchQuery: localStorage.getItem('searchQuery') });
+      setIsValid(true);
     }
   }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleSearch(values.searchQuery);
+  }
 
   return (
     <section className='search'>
       <form className='search__form' onSubmit={handleSubmit} noValidate>
         <div className='search__input-container'>
-          <input value={searchQuery} onChange={handleSetSearchQuery} className='search__input input' required type='text' placeholder='Фильм' />
-          <button className='search__button button' type='submit' />
+          <input
+            name='searchQuery'
+            value={values.searchQuery || ''}
+            onChange={handleChange}
+            className='search__input input'
+            required
+            type='text'
+            placeholder='Фильм'
+          />
+          <span className='search__user-message'>{errors.searchQuery ? 'Нужно ввести ключевое слово' : ''}</span>
+          <button className='search__button button' type='submit' disabled={!isValid} />
         </div>
         <div className='search__thumbler-container'>
           <input

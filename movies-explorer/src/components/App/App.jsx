@@ -194,7 +194,9 @@ function App() {
       localStorage.setItem('isChecked', isChecked);
 
       localStorage.setItem('searchQuery', searchQuery);
-      localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+      if (foundMovies) {
+        localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+      }
 
       return foundMovies;
     }
@@ -204,6 +206,7 @@ function App() {
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
   const [savedMoviesCards, setSavedMoviesCards] = useState([]);
   const [filteredSavedMoviesCards, setFilteredSavedMoviesCards] = useState([]);
+  const [isSavedMoviesChecked, setSavedMoviesChecked] = useState(false);
 
   async function downloadSavedMovies() {
     try {
@@ -220,25 +223,27 @@ function App() {
       return [];
     }
   }
-  async function findSavedMovies(searchQuery) {
-    if (!searchQuery && isChecked) {
+
+  function findSavedMovies(searchQuery) {
+    if (!searchQuery && isSavedMoviesChecked) {
       setFilteredSavedMoviesCards(JSON.parse(localStorage.getItem('savedMovies')));
-      const sortedShortMovies = sortShortMovies(filteredSavedMoviesCards, isChecked);
+      const sortedShortMovies = sortShortMovies(filteredSavedMoviesCards, isSavedMoviesChecked);
       setFilteredSavedMoviesCards(sortedShortMovies);
-      return sortedShortMovies;
+      // return sortedShortMovies;
     } else if (!searchQuery) {
       setFilteredSavedMoviesCards(JSON.parse(localStorage.getItem('savedMovies')));
-      return JSON.parse(localStorage.getItem('savedMovies'));
+      // return JSON.parse(localStorage.getItem('savedMovies'));
     } else {
       const filteredByQueryMovies = filterMoviesByQuery(savedMoviesCards, searchQuery);
-      if (isChecked) {
-        const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
+      setFilteredSavedMoviesCards(filteredByQueryMovies);
+      if (isSavedMoviesChecked) {
+        const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isSavedMoviesChecked);
         setFilteredSavedMoviesCards(sortedShortMovies);
-        return sortedShortMovies;
-      } else {
-        setFilteredSavedMoviesCards(filteredByQueryMovies);
-        return filteredByQueryMovies;
       }
+      //     return sortedShortMovies;
+      //   } else {
+      //     return filteredByQueryMovies;
+      //   }
     }
   }
 
@@ -249,8 +254,9 @@ function App() {
     await downloadSavedMovies();
     findSavedMovies(searchQuery);
   }
+
   function handleSavedMoviesCheckbox() {
-    setIsChecked(!isChecked);
+    setSavedMoviesChecked(!isSavedMoviesChecked);
     findSavedMovies();
   }
 
@@ -276,7 +282,12 @@ function App() {
   }
 
   ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
-
+  useEffect(() => {
+    if (location.pathname === '/saved-movies') {
+      setIsChecked(false);
+      setSavedMoviesChecked(false);
+    }
+  }, [location.pathname]);
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='App'>
@@ -307,6 +318,7 @@ function App() {
                   handleSaveMovie={handleSaveMovie}
                   handleDeleteMovie={handleDeleteMovie}
                   savedMoviesCards={savedMoviesCards}
+                  setIsChecked={setIsChecked}
                 />
                 <Footer />
               </ProtectedRouteElement>
@@ -319,13 +331,17 @@ function App() {
                 <Header />
                 <SavedMovies
                   isLoading={isLoading}
-                  handleSearch={handleSavedMoviesSearch}
                   handleCheckbox={handleSavedMoviesCheckbox}
                   isDownloadError={isDownloadError}
                   isMoviesNotFound={isMoviesNotFound}
                   moviesCards={filteredSavedMoviesCards}
                   handleDeleteMovie={handleDeleteMovie}
                   savedMoviesCards={savedMoviesCards}
+                  handleSearch={handleSavedMoviesSearch}
+                  setFilteredMoviesCards={setFilteredMoviesCards}
+                  isChecked={isSavedMoviesChecked}
+                  setIsChecked={setIsChecked}
+                  setSavedMoviesChecked={setSavedMoviesChecked}
                 />
                 <Footer />
               </ProtectedRouteElement>

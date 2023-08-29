@@ -33,9 +33,9 @@ function Movies({
           ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
           : isMoviesNotFound
           ? 'Ничего не найдено'
-          : moviesCards.length === 0 && !JSON.parse(localStorage.getItem('downloadedMovies'))
-          ? 'Нужно ввести ключевое слово'
-          : ''}
+          : // : moviesCards.length === 0 && !JSON.parse(localStorage.getItem('downloadedMovies'))
+            // ? 'Нужно ввести ключевое слово'
+            ''}
       </p>
 
       {isLoading && <Preloader />}

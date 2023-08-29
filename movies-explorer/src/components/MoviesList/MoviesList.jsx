@@ -11,6 +11,10 @@ import {
   TABLET_MORE_QUANTITY,
   MOBILE_CARDS_QUANTITY,
   MOBILE_MORE_QUANTITY,
+  DEKTOP_WINDOW_WIDTH,
+  TABLET_WINDOW_WIDTH,
+  MOBILE_WINDOW_WIDTH,
+  DELAY_TIME,
 } from '../../utils/consts';
 
 function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMoviesCards }) {
@@ -21,15 +25,20 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
   const [moreQuantity, setMoreButtonQuantity] = useState(0);
   const [moviesCardsView, setMoviesCardsView] = useState([]);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  // useEffect(() => {
+  //   setCardsQuantity([]);
+  //   setMoreButtonQuantity([]);
+  //   setMoviesCardsView([]);
+  // }, []);
 
   useEffect(() => {
-    if (windowWidth > 1024) {
+    if (windowWidth > DEKTOP_WINDOW_WIDTH) {
       setCardsQuantity(DESKTOP_CARDS_QUANTITY);
       setMoreButtonQuantity(DESKTOP_MORE_QUANTITY);
-    } else if (windowWidth <= 1007 && windowWidth > 635) {
+    } else if (windowWidth <= TABLET_WINDOW_WIDTH && windowWidth > MOBILE_WINDOW_WIDTH) {
       setCardsQuantity(TABLET_CARDS_QUANTITY);
       setMoreButtonQuantity(TABLET_MORE_QUANTITY);
-    } else if (windowWidth <= 635) {
+    } else if (windowWidth <= MOBILE_WINDOW_WIDTH) {
       setCardsQuantity(MOBILE_CARDS_QUANTITY);
       setMoreButtonQuantity(MOBILE_MORE_QUANTITY);
     }
@@ -54,18 +63,19 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
 
   useEffect(() => {
     setTimeout(() => {
-      if (windowWidth > 1024) {
-        // setCardsQuantity(DESKTOP_CARDS_QUANTITY);
+      if (windowWidth > DEKTOP_WINDOW_WIDTH) {
+        setCardsQuantity(DESKTOP_CARDS_QUANTITY);
         setMoreButtonQuantity(DESKTOP_MORE_QUANTITY);
-      } else if (windowWidth <= 1007 && windowWidth > 635) {
-        // setCardsQuantity(TABLET_CARDS_QUANTITY);
+      } else if (windowWidth <= TABLET_WINDOW_WIDTH && windowWidth > MOBILE_WINDOW_WIDTH) {
+        setCardsQuantity(TABLET_CARDS_QUANTITY);
         setMoreButtonQuantity(TABLET_MORE_QUANTITY);
-      } else if (windowWidth <= 635) {
-        // setCardsQuantity(MOBILE_CARDS_QUANTITY);
+      } else if (windowWidth <= MOBILE_WINDOW_WIDTH) {
+        setCardsQuantity(MOBILE_CARDS_QUANTITY);
         setMoreButtonQuantity(MOBILE_MORE_QUANTITY);
       }
-    }, 1200);
+    }, DELAY_TIME);
   }, [windowWidth, moviesCards]);
+
   function handleMoreButtonClick() {
     setMoviesCardsView(moviesCards.filter((item, index) => index < cardsQuantity + moreQuantity));
     setCardsQuantity(moreQuantity + cardsQuantity);
@@ -78,10 +88,11 @@ function MoviesList({ moviesCards, handleSaveMovie, handleDeleteMovie, savedMovi
   return location.pathname === '/saved-movies' ? (
     <section className='saved-movies__section'>
       <ul className='saved-movies__list'>
-        {moviesCardsView.map((movie) => {
-          if (movie.owner === currentUser.id)
-            return <MovieCard movie={movie} key={movie._id} handleDeleteMovie={handleDeleteMovie} savedMoviesCards={savedMoviesCards} />;
-        })}
+        {moviesCards
+          .filter((item) => item.owner === currentUser.id)
+          .map((movie) => (
+            <MovieCard movie={movie} key={movie._id} handleDeleteMovie={handleDeleteMovie} savedMoviesCards={savedMoviesCards} />
+          ))}
       </ul>
     </section>
   ) : (
