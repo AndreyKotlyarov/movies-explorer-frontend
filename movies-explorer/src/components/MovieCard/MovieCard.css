@@ -11,9 +11,11 @@
 .movie-card__info {
     margin: 14px 0;
     min-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 20%;
+    column-gap: 10px;
+    /* align-items: center;
+    justify-content: space-between; */
     padding: 0 14px;
     box-sizing: border-box;
 }
@@ -36,11 +38,18 @@
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
+    text-align: right;
+}
+
+.movie-card__trailer-link {
+    max-height: 168px;
+    max-width: 300px;
 }
 
 .movie-card__image {
     max-width: 100%;
-    object-fit: contain;
+    max-height: 100%;
+    object-fit: cover;
 }
 
 .movie-card__save-button {
@@ -56,6 +65,10 @@
     border-radius: 30px;
     margin: 14px auto;
     cursor: pointer;
+}
+
+.movie-card__save-button_type_inactive::after {
+    content: 'Сохранить';
 }
 
 .movie-card__save-button_type_active {
@@ -93,13 +106,15 @@
         margin: 0;
     }
 
-    .movie-card__image {
-        min-height: 190px;
+    .movie-card__trailer-link {
+        max-height: 190px;
+        max-width: 342px;
     }
 }
 
 @media screen and (min-width: 1280px) {
-    .movie-card__image {
-        min-height: 200px;
+    .movie-card__trailer-link {
+        max-height: 200px;
+        max-width: 300px;
     }
 }

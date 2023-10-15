@@ -1,8 +1,13 @@
+import { Link } from 'react-router-dom';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import './Register.css';
 import logo from '../../images/site-logo.svg';
-import { Link } from 'react-router-dom';
-
-function Register() {
+function Register({ registerUser }) {
+  const { values, handleChange, errors, isValid } = useFormAndValidation();
+  function handleSubmit(e) {
+    e.preventDefault();
+    registerUser(values.email, values.password, values.name);
+  }
   return (
     <main className='register'>
       <section className='register__section'>
@@ -11,35 +16,69 @@ function Register() {
         </Link>
         <h1 className='register__title'>Добро пожаловать!</h1>
       </section>
-      <form className='register__form'>
+      <form className='register__form' onSubmit={handleSubmit}>
         <ul className='register__content'>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='name__input'>
               Имя
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='text' minLength='2' maxLength='30' id='name__input' placeholder='Виталий' />
+              <input
+                value={values.name || ''}
+                onChange={handleChange}
+                name='name'
+                className='register__input input'
+                type='text'
+                minLength='2'
+                maxLength='30'
+                id='name__input'
+                placeholder='Ваше имя'
+                required
+              />
             </div>
+            <span className='register__error-message register__error-message_active'>{errors.name}</span>
           </li>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='email__input'>
               E-mail
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='email' id='email__input' placeholder='pochta@yandex.ru' />
+              <input
+                value={values.email || ''}
+                onChange={handleChange}
+                name='email'
+                className='register__input input'
+                type='email'
+                id='email__input'
+                placeholder='Ваша электронная почта'
+                pattern='^[a-z1-9]+@+[a-z1-9]+[.]+[a-z]+$'
+                required
+              />
             </div>
+            <span className='register__error-message register__error-message_active'>{errors.email}</span>
           </li>
           <li className='register__input-container'>
             <label className='register__input-label' htmlFor='password__input'>
               Пароль
             </label>
             <div className='register__input-area'>
-              <input className='register__input input' type='text' minLength='8' maxLength='30' id='password__input' placeholder='Пароль' />
+              <input
+                value={values.password || ''}
+                onChange={handleChange}
+                name='password'
+                className='register__input input'
+                type='password'
+                minLength='8'
+                maxLength='30'
+                id='password__input'
+                placeholder='Пароль'
+                required
+              />
             </div>
-            <span className='register__error-message register__error-message_active'>Что-то пошло не так...</span>
+            <span className='register__error-message register__error-message_active'>{errors.password}</span>
           </li>
         </ul>
-        <button className='register__button button' type='submit'>
+        <button className={`register__button button ${isValid ? '' : 'button_type_disabled'}`} type='submit' disabled={!isValid}>
           Зарегистрироваться
         </button>
       </form>
