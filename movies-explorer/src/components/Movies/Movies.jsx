@@ -1,4 +1,4 @@
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MoviesList from '../MoviesList/MoviesList';
 import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
@@ -14,7 +14,6 @@ function Movies({
   handleDeleteMovie,
   savedMoviesCards,
   isDownloadError,
-  isMoviesNotFound,
 }) {
   function getFoundMovies() {
     if (!localStorage.getItem('foundMovies')) {
@@ -24,6 +23,12 @@ function Movies({
     }
   }
 
+  const [isNotFound, setIsNotFound] = useState(false);
+
+  useEffect(() => {
+    moviesCards.length === 0 ? setIsNotFound(true) : setIsNotFound(false);
+  }, [moviesCards]);
+
   return (
     <main className='movies'>
       <Search handleSearch={handleSearch} handleCheckbox={handleCheckbox} isChecked={isChecked} />
@@ -31,7 +36,7 @@ function Movies({
       <p className='movies__user-message'>
         {isDownloadError
           ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-          : isMoviesNotFound
+          : isNotFound
           ? 'Ничего не найдено'
           : // : moviesCards.length === 0 && !JSON.parse(localStorage.getItem('downloadedMovies'))
             // ? 'Нужно ввести ключевое слово'

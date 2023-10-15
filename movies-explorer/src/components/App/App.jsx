@@ -162,15 +162,10 @@ function App() {
         const sortedShortMovies = sortShortMovies(filteredByQueryMovies, isChecked);
         setFilteredMoviesCards(sortedShortMovies);
 
-        if (sortedShortMovies.length === 0) {
-          setIsMoviesNotFound(true);
-        } else setIsMoviesNotFound(false);
         return sortedShortMovies;
       } else {
         setFilteredMoviesCards(filteredByQueryMovies);
-        if (filteredByQueryMovies.length === 0) {
-          setIsMoviesNotFound(true);
-        } else setIsMoviesNotFound(false);
+
         return filteredByQueryMovies;
       }
     }
@@ -178,8 +173,11 @@ function App() {
 
   function handleCheckbox() {
     setIsChecked(!isChecked);
-    findMovies();
   }
+
+  useEffect(() => {
+    findMovies();
+  }, [isChecked]);
 
   async function handleSearch(searchQuery) {
     if (!JSON.parse(localStorage.getItem('downloadedMovies'))) {
@@ -257,9 +255,10 @@ function App() {
 
   function handleSavedMoviesCheckbox() {
     setSavedMoviesChecked(!isSavedMoviesChecked);
-    findSavedMovies();
   }
-
+  useEffect(() => {
+    findSavedMovies();
+  }, [isSavedMoviesChecked]);
   ///////////////////////////////////// Saved Movies /////////////////////////////////////
 
   ///////////////////////////////////// Handle Save/Delete Movie /////////////////////////////////////
@@ -312,7 +311,6 @@ function App() {
                   handleCheckbox={handleCheckbox}
                   isLoading={isLoading}
                   isDownloadError={isDownloadError}
-                  isMoviesNotFound={isMoviesNotFound}
                   moviesCards={filteredMoviesCards}
                   isChecked={isChecked}
                   handleSaveMovie={handleSaveMovie}
@@ -333,7 +331,6 @@ function App() {
                   isLoading={isLoading}
                   handleCheckbox={handleSavedMoviesCheckbox}
                   isDownloadError={isDownloadError}
-                  isMoviesNotFound={isMoviesNotFound}
                   moviesCards={filteredSavedMoviesCards}
                   handleDeleteMovie={handleDeleteMovie}
                   savedMoviesCards={savedMoviesCards}
